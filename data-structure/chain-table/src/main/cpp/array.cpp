@@ -47,5 +47,11 @@ int main()
 
 //     int aa[1024 * 1024 * 2] = {};
 
+    //二维数组
+    int aa[2][5] = { {0,1,2,3,4}, {5,6,7,8,9} };
+    cout << 1[aa][2] << endl;
+    cout << *(*(1+aa)+2) << endl;
+    cout << aa[1][2] << endl;
+
     return 0;
 }
