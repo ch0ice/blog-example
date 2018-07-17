@@ -1,7 +1,7 @@
+package cn.com.onlinetool;
+
 import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author choice
@@ -26,6 +26,8 @@ public class App {
         for(int i = 0; i < 10; i++){
             System.out.println(l2.get(i));
         }
+
+        Map<String,String> stringMap = new HashMap();
 
 
 
