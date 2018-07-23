@@ -1,4 +1,4 @@
-# include<iostream>
+#include<iostream>
 using namespace std;
 
 //单向链表
@@ -48,19 +48,3 @@ int main()
 
     return 0;
 }
-
-
-
-//双向链表
-struct s2
-{
-    int data;
-    s2* next;
-};
-
-//循环链表
-struct s3
-{
-    int data;
-    s3* next;
-};
