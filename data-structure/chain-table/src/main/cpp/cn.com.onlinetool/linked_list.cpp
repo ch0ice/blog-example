@@ -133,6 +133,13 @@ void *linked_list_node_find(LINKED_LIST_T *ptr,
     return NULL;
 }
 
+//比较函数
+int compare(const void *data1, const void *data2){
+    if (*((int*)data1) == *((int*)data2)){
+        return 0;
+    }
+    return -1;
+}
 
 //打印函数
 void proc(void *data)
@@ -149,7 +156,7 @@ int main()
     //初始化链表
     linked_list* list = (linked_list*)linked_list_new(3);
 
-    //插入节点
+    //插入节点 尾插
     const int a1 = 1;
     const void* data1 = &a1;
     linked_list_node_append(list,data1);
@@ -163,7 +170,7 @@ int main()
     const void* data4 = &a4;
     linked_list_node_append(list,data4);
 
-    //插入节点
+    //插入节点 头插
     const int a5 = 5;
     const void* data5 = &a5;
     linked_list_node_prepend(list,data5);
@@ -181,6 +188,13 @@ int main()
     node_print_fun_t* proc_fun = proc;
     linked_list_travel(list,proc_fun);
 
+    //查找节点
+    node_compare_fun_t* compare_fun = compare;
+    const int key = 8;
+    const void* void_key = &key;
+    void *result = linked_list_node_find(list,compare_fun,void_key);
+    printf("%s\n","查询结果为");
+    printf("%d\n",*((int*)result));
 
 
 
