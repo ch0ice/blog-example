@@ -122,7 +122,8 @@ void linked_list_node_delete(LINKED_LIST_T *ptr,
 
 //查找节点
 void *linked_list_node_find(LINKED_LIST_T *ptr,
-                      node_compare_fun_t *comp, const void *key) {
+                      node_compare_fun_t *comp,
+                      const void *key) {
     linked_list *me = (linked_list*)ptr;
     node *curr;
     for (curr = me->head.next;
@@ -184,17 +185,25 @@ int main()
     const void* data8 = &a8;
     linked_list_node_prepend(list,data8);
 
+
+    //删除节点
+    node_compare_fun_t* compare_fun = compare;
+    const int key = 7;
+    const void* void_key = &key;
+    linked_list_node_delete(list,compare_fun,void_key);
+
+
     //遍历节点
     node_print_fun_t* proc_fun = proc;
     linked_list_travel(list,proc_fun);
 
     //查找节点
-    node_compare_fun_t* compare_fun = compare;
-    const int key = 8;
-    const void* void_key = &key;
-    void *result = linked_list_node_find(list,compare_fun,void_key);
-    printf("%s\n","查询结果为");
-    printf("%d\n",*((int*)result));
+    const int key1 = 8;
+    const void* void_key1 = &key1;
+    void *result = linked_list_node_find(list,compare_fun,void_key1);
+    cout << "查询结果为" << endl;
+    cout << *((int*)result) << endl;
+//    printf("%d\n",*((int*)result));
 
 
 
