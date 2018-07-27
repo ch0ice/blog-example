@@ -5,7 +5,7 @@
 typedef void node_print_fun_t(void*);
 //比较
 typedef int node_compare_fun_t(const void*, const void*);
-
+//类定义
 typedef void LINKED_LIST_T;
 
 //初始化

@@ -11,9 +11,9 @@ struct node{
 };
 //定义双向链表结构体
 struct linked_list{
+    //头元素
     node head;
     int elm_size;
-    int elmnr;
 };
 
 //初始化
@@ -155,7 +155,7 @@ void proc(void *data)
 int main()
 {
     //初始化链表
-    linked_list* list = (linked_list*)linked_list_new(3);
+    linked_list* list = (linked_list*)linked_list_new(sizeof(int));
 
     //插入节点 尾插
     const int a1 = 1;
