@@ -1,7 +1,5 @@
 package cn.com.onlinetool;
 
-import java.util.Vector;
-
 /**
  * @author choice
  * @description:
@@ -11,6 +9,7 @@ import java.util.Vector;
 public class App {
     public static void main(String[] args){
         VectorTemp<String> myVector = new MyVector<String>(2);
+        System.out.println("是否为空：" + myVector.isEmpty());
         System.out.println("增加元素,当前大小：" + myVector.size());
         myVector.add("A");
         myVector.add("B");
@@ -18,6 +17,8 @@ public class App {
         for (int i = 0; i < myVector.size(); i++){
             System.out.println(myVector.get(i));
         }
+
+        System.out.println("是否为空：" + myVector.isEmpty());
         System.out.println("插入元素,当前大小：" + myVector.size());
         myVector.insert(2,"I");
         for (int i = 0; i < myVector.size(); i++){
@@ -28,16 +29,13 @@ public class App {
         for (int i = 0; i < myVector.size(); i++){
             System.out.println(myVector.get(i));
         }
+        System.out.println("是否存在元素R：" + myVector.contains("R"));
         System.out.println("替换元素,当前大小：" + myVector.size());
         myVector.set(1,"R");
+        System.out.println("是否存在元素R：" + myVector.contains("R"));
         for (int i = 0; i < myVector.size(); i++){
             System.out.println(myVector.get(i));
         }
-
-
-        Vector vector = new Vector();
-
-
 
 
     }
