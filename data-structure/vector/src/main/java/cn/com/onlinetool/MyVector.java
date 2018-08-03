@@ -60,6 +60,7 @@ public class MyVector implements Vector{
             ARR[i] = ARR[i - 1];
         }
         ARR[r] = obj;
+        size++;
         return obj;
     }
 
@@ -69,6 +70,7 @@ public class MyVector implements Vector{
             extend();
         }
         ARR[rank] = obj;
+        size++;
         return obj;
     }
 
