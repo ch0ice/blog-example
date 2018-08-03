@@ -29,6 +29,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * 给定初始大小
+     * @author choice
      * @param initialCapacity
      */
     public MyVector(int initialCapacity) {
@@ -42,6 +43,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * 无参构造，默认初始大小10
+     * @author choice
      */
     public MyVector(){
         this(10);
@@ -49,6 +51,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * Collection to Vector
+     * @author choice
      * @param c
      */
     public MyVector(Collection<? extends E> c) {
@@ -82,6 +85,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * 检查一个对象是否存在
+     * @author choice
      * @param e
      * @return
      */
@@ -92,6 +96,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * 从指定下标开始轮训检查一个对象是否存在
+     * @author choice
      * @param o
      * @param index
      * @return
@@ -156,6 +161,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * 获取给定下标的元素
+     * @author choice
      * @param index
      * @return
      */
@@ -169,6 +175,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * 替换 下标为index 的元素
+     * @author choice
      * @param index
      * @param element
      * @return
@@ -184,6 +191,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * 追加元素
+     * @author choice
      * @param e
      * @return
      */
@@ -200,6 +208,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * 将元素插入到给定位置
+     * @author choice
      * @param index
      * @param obj
      * @return
@@ -224,6 +233,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * 取给定下标元素
+     * @author choice
      * @param index
      * @return
      */
@@ -233,6 +243,7 @@ public class MyVector<E> implements VectorTemp<E> {
 
     /**
      * 删除给定下标的元素
+     * @author choice
      * @param index
      * @return
      * @throws VectorViolationException
