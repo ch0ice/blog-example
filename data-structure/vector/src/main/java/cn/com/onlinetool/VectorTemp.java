@@ -50,7 +50,7 @@ public interface VectorTemp<E> {
     int lastIndexOf(E e, int index);
 
     /**
-     * 取秩为r的元素
+     * 取下标为index的元素
      * @param index
      * @return
      * @throws VectorViolationException
@@ -58,7 +58,7 @@ public interface VectorTemp<E> {
     E get(int index) throws VectorViolationException;
 
     /**
-     * 插入obj，作为秩为r的元素；返回该元素
+     * 插入obj，作为下标为index的元素；返回该元素
      * @param index
      * @param e
      * @return
@@ -82,7 +82,7 @@ public interface VectorTemp<E> {
     E insert(int index, E obj);
 
     /**
-     * 删除秩为r的元素
+     * 删除下标为index的元素
      * @param index
      * @return
      * @throws VectorViolationException
