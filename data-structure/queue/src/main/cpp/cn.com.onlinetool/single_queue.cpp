@@ -151,11 +151,22 @@ int main(){
     printf("队列长度\n");
     cout << Q_Length(*(linkQueue)) << endl;
 
+    cout << linkQueue->head->data << endl;
+    cout << linkQueue->tail->data << endl;
+
     printf("插入数据\n");
     Q_Put(linkQueue,1);
+    cout << linkQueue->head->data << endl;
+    cout << linkQueue->tail->data << endl;
     Q_Put(linkQueue,2);
+    cout << linkQueue->head->data << endl;
+    cout << linkQueue->tail->data << endl;
     Q_Put(linkQueue,3);
+    cout << linkQueue->head->data << endl;
+    cout << linkQueue->tail->data << endl;
     Q_Put(linkQueue,4);
+    cout << linkQueue->head->data << endl;
+    cout << linkQueue->tail->data << endl;
 
     printf("是否为空\n");
     cout << Q_Empty(*(linkQueue)) << endl;
