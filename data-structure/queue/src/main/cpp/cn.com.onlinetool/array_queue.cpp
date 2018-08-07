@@ -35,9 +35,8 @@ void Q_Clear(Queue *Q) {
 // 入列
 int Q_Put(Queue *Q, int x) {
     //如果当前元素数量等于最大数量 返回 -1
-    if (Q->rear + 1 == MAX_QSIZE) {
+    if (Q->rear + 1 == MAX_QSIZE)
         return -1;
-    }
     Q->Array[Q->rear] = x;
     Q->rear = Q->rear + 1;
     //length + 1
