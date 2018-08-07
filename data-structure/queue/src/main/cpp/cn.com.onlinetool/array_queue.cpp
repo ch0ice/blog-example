@@ -16,8 +16,8 @@ struct Queue {
 // 构造一个空队列Q
 Queue* Q_Init() {
     Queue *Q = (Queue*)malloc(sizeof(Queue));
-    // 存储分配失败
     if (!Q){
+        // 存储分配失败
         exit(OVERFLOW);
     }
     Q->head = Q->tail = Q->length = 0;
@@ -25,20 +25,20 @@ Queue* Q_Init() {
 }
 
 // 将Q清为空队列
-void Q_Clear(SqQueue *Q) {
-    Q->head = Q->tail = 0;
+void Q_Clear(Queue *Q) {
+    Q->head = Q->tail = Q->length = 0;
 }
 
 // 入列
-void Q_Put(Queue *Q, int x) {
-    Q->Array[Q->tail] = x;
-    //Queue1->length改為空間大小10
+int Q_Put(Queue *Q, int x) {
     if (Q->tail + 1 == 10) {
-        Q->tail = 0; // 1改為0
-    } else
-        Q->tail = Q->tail + 1;
+        return -1;
+    }
+    Q->Array[Q->tail] = x;
+    Q->tail = Q->tail + 1;
     //length + 1
     Q->length = Q->length + 1;
+    return 1;
 }
 
 // 出列
