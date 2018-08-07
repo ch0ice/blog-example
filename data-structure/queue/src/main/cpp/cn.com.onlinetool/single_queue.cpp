@@ -88,7 +88,7 @@ int Q_Length(LinkQueue Q) {
 }
 
 // 打印队列中的内容
-int Q_Print(LinkQueue Q) {
+void Q_Print(LinkQueue Q) {
     int i = 0;
     QNodePtr p;
     p = Q.head;
@@ -97,16 +97,15 @@ int Q_Print(LinkQueue Q) {
         cout << p->next->data << endl;
         p = p->next;
     }
-    return i;
 }
 
 // 若队列不空，则用e返回Q的队头元素，并返回1，否则返回-1
-int Q_GetHead(LinkQueue Q, int *e) {
+int Q_GetHead(LinkQueue Q, int &e) {
     QNodePtr p;
     if (Q.head == Q.tail)
         return -1;
     p = Q.head->next;
-    *e = p->data;
+    e = p->data;
     return 1;
 }
 
@@ -117,113 +116,83 @@ void Q_Put(LinkQueue *Q, int e) {
         exit(OVERFLOW);
     p->data = e;
     p->next = NULL;
-    //FIFO，将新节点追加到尾节点后面，变成新的尾节点
+    //FIFO，将新节点追加到尾节点后面
     Q->tail->next = p;
+    //将新的节点变成尾节点
     Q->tail = p;
 }
 
 
 // 若队列不空，删除Q的队头元素，用e返回其值，并返回1，否则返回-1
-int Q_Poll(LinkQueue *Q) {
+int Q_Poll(LinkQueue *Q,int &e) {
     QNodePtr p;
     if (Q->head == Q->tail)
         return -1;
     //取出头节点
     p = Q->head->next;
     //取出头节点的数据
-    int e = p->data;
+    e = p->data;
+    cout << e << endl;
     Q->head->next = p->next;
     if (Q->tail == p)
         Q->tail = Q->head;
     free(p);
-    return e;
+    cout << e << endl;
+    return 1;
 }
 
 
 int main(){
 
-    printf("初始化队列\n");
-    LinkQueue * linkQueue = Q_Init();
+    cout << "初始化队列" << endl;
+    LinkQueue * Q = Q_Init();
+    cout << "Q " << Q << endl;
+    cout << "head= " << Q->head << endl;
+    cout << "tail= " << Q->tail << endl;
 
-    printf("是否为空\n");
-    cout << Q_Empty(*(linkQueue)) << endl;
+    cout << "是否为空" << Q_Empty(*(Q)) << endl;
 
-    printf("队列长度\n");
-    cout << Q_Length(*(linkQueue)) << endl;
+    cout << "当前队列长度" << Q_Length(*(Q)) << endl;
 
-    cout << linkQueue->head->data << endl;
-    cout << linkQueue->tail->data << endl;
+    cout << "插入数据（put）" << endl;
+    Q_Put(Q,111);
+    Q_Put(Q,222);
+    Q_Put(Q,333);
+    Q_Put(Q,444);
 
-    printf("插入数据\n");
-    Q_Put(linkQueue,1);
-    cout << linkQueue->head->data << endl;
-    cout << linkQueue->tail->data << endl;
-    Q_Put(linkQueue,2);
-    cout << linkQueue->head->data << endl;
-    cout << linkQueue->tail->data << endl;
-    Q_Put(linkQueue,3);
-    cout << linkQueue->head->data << endl;
-    cout << linkQueue->tail->data << endl;
-    Q_Put(linkQueue,4);
-    cout << linkQueue->head->data << endl;
-    cout << linkQueue->tail->data << endl;
-
-    printf("是否为空\n");
-    cout << Q_Empty(*(linkQueue)) << endl;
-
-    printf("打印队列中的内容\n");
-    Q_Print(*(linkQueue));
-
-    printf("队列长度\n");
-    cout << Q_Length(*(linkQueue)) << endl;
-
-    //有问题的
-//    int *head_data;
-//    printf("取出并删除数据（poll）\n");
-//    Q_Poll(linkQueue,head_data);
-//    Q_Poll(linkQueue,head_data);
-//    Q_Poll(linkQueue,head_data);
-//    cout << *(head_data) << endl;
-
-    //没问题的
-    printf("取出并删除数据（poll）\n");
-    cout << Q_Poll(linkQueue) << endl;
-
-    printf("取出并删除数据（poll）\n");
-    cout << Q_Poll(linkQueue) << endl;
-
-    printf("取出并删除数据（poll）\n");
-    cout << Q_Poll(linkQueue) << endl;
-
-    printf("取出并删除数据（poll）\n");
-    cout << Q_Poll(linkQueue) << endl;
-
-    printf("取出并删除数据（poll）\n");
-    cout << Q_Poll(linkQueue) << endl;
+    cout << "是否为空" << Q_Empty(*(Q)) << endl;
 
 
+    int head_data;
+    Q_GetHead(*(Q),head_data);
+    cout << "获取头元素" << head_data << endl;
 
-    printf("队列长度\n");
-    cout << Q_Length(*(linkQueue)) << endl;
+    cout << "当前队列长度" << Q_Length(*(Q)) << endl;
 
-    printf("插入数据\n");
-    Q_Put(linkQueue,4);
+    cout << "打印队列中的内容" << endl;
+    Q_Print(*(Q));
 
-    printf("是否为空\n");
-    cout << Q_Empty(*(linkQueue)) << endl;
+    Q_Poll(Q,head_data);
+    cout << "取出并删除数据（poll）" << head_data << endl;
+    Q_Poll(Q,head_data);
+    cout << "取出并删除数据（poll）" << head_data << endl;
+    Q_Poll(Q,head_data);
+    cout << "取出并删除数据（poll）" << head_data << endl;
 
-    printf("清空队列\n");
-    Q_Clear(linkQueue);
-    cout << linkQueue->head << endl;
-    cout << linkQueue->tail << endl;
+    cout << "当前队列长度" << Q_Length(*(Q)) << endl;
 
-    printf("是否为空\n");
-    cout << Q_Empty(*(linkQueue)) << endl;
+    cout << "清空队列" << endl;
+    Q_Clear(Q);
+    cout << Q->head << endl;
+    cout << Q->tail << endl;
 
-    printf("销毁队列\n");
-    Q_Destroy(linkQueue);
-    cout << linkQueue->head << endl;
-    cout << linkQueue->tail << endl;
+    cout << "是否为空" << Q_Empty(*(Q)) << endl;
+
+    cout << "销毁队列" << endl;
+    Q_Destroy(Q);
+    cout << "Q " << Q << endl;
+    cout << "head= " << Q->head << endl;
+    cout << "tail= " << Q->tail << endl;
 
 
 
