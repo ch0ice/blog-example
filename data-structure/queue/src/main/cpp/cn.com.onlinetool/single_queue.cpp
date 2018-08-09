@@ -4,10 +4,11 @@
 #include <cstring>
 #include <cstdlib>
 using namespace std;
-
+// 队列的数据类型
+typedef int Q_Data;
 // 定义单链队列的存储结构
 typedef struct QNode {
-    int data;
+    Q_Data data;
     QNode *next;
 }QNode,*QNodePtr;
 
@@ -67,7 +68,7 @@ void Q_Clear(LinkQueue *Q) {
 }
 
 // 若Q为空队列，则返回-1，否则返回1
-int Q_Empty(LinkQueue Q) {
+Q_Data Q_Empty(LinkQueue Q) {
     if (Q.front->next == NULL)
         return 1;
     else
@@ -75,8 +76,8 @@ int Q_Empty(LinkQueue Q) {
 }
 
 // 求队列的长度
-int Q_Length(LinkQueue Q) {
-    int i = 0;
+Q_Data Q_Length(LinkQueue Q) {
+    Q_Data i = 0;
     QNodePtr p;
     p = Q.front;
     //遍历队列中的节点，直到队尾等于队头
@@ -89,7 +90,7 @@ int Q_Length(LinkQueue Q) {
 
 // 打印队列中的内容
 void Q_Print(LinkQueue Q) {
-    int i = 0;
+    Q_Data i = 0;
     QNodePtr p;
     p = Q.front;
     while (Q.rear != p) {
@@ -100,7 +101,7 @@ void Q_Print(LinkQueue Q) {
 }
 
 // 若队列不空，则用e返回Q的队头元素，并返回1，否则返回-1
-int Q_GetHead(LinkQueue Q, int &e) {
+Q_Data Q_GetHead(LinkQueue Q, Q_Data &e) {
     QNodePtr p;
     if (Q.front == Q.rear)
         return -1;
@@ -110,7 +111,7 @@ int Q_GetHead(LinkQueue Q, int &e) {
 }
 
 // 插入元素e为Q的新的队尾元素
-void Q_Put(LinkQueue *Q, int e) {
+void Q_Put(LinkQueue *Q, Q_Data e) {
     QNodePtr p = (QNodePtr)malloc(sizeof(QNode));
     if (!p) // 存储分配失败
         exit(OVERFLOW);
@@ -124,7 +125,7 @@ void Q_Put(LinkQueue *Q, int e) {
 
 
 // 若队列不空，删除Q的队头元素，用e返回其值，并返回1，否则返回-1
-int Q_Poll(LinkQueue *Q,int &e) {
+Q_Data Q_Poll(LinkQueue *Q,Q_Data &e) {
     QNodePtr p;
     if (Q->front == Q->rear)
         return -1;
@@ -163,7 +164,7 @@ int main(){
     cout << "是否为空" << Q_Empty(*(Q)) << endl;
 
 
-    int front_data;
+    Q_Data front_data;
     Q_GetHead(*(Q),front_data);
     cout << "获取头元素" << front_data << endl;
 
