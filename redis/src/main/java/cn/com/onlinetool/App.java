@@ -3,6 +3,7 @@ package cn.com.onlinetool;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
+
 /**
  * Hello world!
  *
@@ -15,6 +16,5 @@ public class App {
 //        ApplicationContext context =  new ClassPathXmlApplicationContext("application.properties");
 //        @SuppressWarnings("unchecked")
 //        RedisTemplate redisTemplate = (RedisTemplate)context.getBean("redisTemplate");
-
     }
 }
