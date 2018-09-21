@@ -1,7 +1,11 @@
 package cn.com.onlinetool.util;
 
 import cn.com.onlinetool.properties.DataSourceProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.*;
+import redis.clients.jedis.exceptions.JedisClusterException;
+import redis.clients.util.JedisClusterCRC16;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -14,14 +18,25 @@ import java.util.*;
 public class JedisUtil {
 
 
-
     private JedisUtil() {
 
     }
 
+    private static Logger logger = LoggerFactory.getLogger(JedisUtil.class);
+
+    /** 单点 */
+    private static JedisPool jedisPool;
+    /** 集群-哨兵 */
+    private static JedisSentinelPool jedisSentinelPool;
+    /** 集群 */
     private static JedisCluster jedisCluster;
-    private static JedisPool jedisPool = null;
-    private static JedisSentinelPool jedisSentinelPool = null;
+    /** 用于缓存连接 */
+    private static Map<String, JedisPool> nodeMap;
+    /** 保存每个主机对应的redis内存槽 */
+    private static TreeMap<Long, String> slotHostMap;
+    /** 工具类对象 */
+    private static final JedisUtil JEDIS_UTIL = new JedisUtil();
+
     static {
         //单点
         if(0 == DataSourceProperties.redisProperties.getType()){
@@ -41,13 +56,13 @@ public class JedisUtil {
         else if(1 == DataSourceProperties.redisProperties.getType()){
             // 添加集群的服务节点Set集合
             Set<HostAndPort> hostAndPortsSet = new HashSet<HostAndPort>();
-            String[] hostArray = DataSourceProperties.redisProperties.getClusterHost().split(",");
-            String[] portArray = DataSourceProperties.redisProperties.getClusterPort().split(",");
+            String[] hostArray = DataSourceProperties.redisProperties.getClusterNode().split(",");
             // 添加节点
             for(int i = 0; i < hostArray.length; i++){
-                hostAndPortsSet.add(new HostAndPort(hostArray[i], Integer.parseInt(portArray[i])));
+                String host = hostArray[i].split(":")[0];
+                Integer port = Integer.parseInt(hostArray[i].split(":")[1]);
+                hostAndPortsSet.add(new HostAndPort(host,port));
             }
-
             // Jedis连接池配置
             JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
             int minIdle = DataSourceProperties.redisProperties.getMinIdle();
@@ -76,19 +91,30 @@ public class JedisUtil {
 
 
     }
-    private static final JedisUtil JEDIS_UTIL = new JedisUtil();
+
+
     /**
+     * @author choice
      * 获取JedisUtil实例
-     *
+     * 集群模式请直接获取JedisCluste使用，否则和回增加io消耗
      * @return
      */
     public static JedisUtil getInstance() {
         return JEDIS_UTIL;
     }
+
     /**
-     * 从jedis连接池中获取获取jedis对象
-     *
+     * 获取集群实例
      * @return
+     */
+    public static JedisCluster getClusterInstance(){
+        return jedisCluster;
+    }
+
+    /**
+     * @author choice
+     * 从jedis连接池中获取获取jedis对象
+     * @return Jedis 连接实例对象
      */
     private Jedis getJedis() {
         if(2 == DataSourceProperties.redisProperties.getType()){
@@ -98,8 +124,8 @@ public class JedisUtil {
     }
 
     /**
-     * 销毁连接池
-     * @return
+     * @author choice
+     * 销毁连接池 和 连接池中的连接
      */
     public void destroy() {
         if(null != jedisPool){
@@ -107,11 +133,9 @@ public class JedisUtil {
         }
     }
 
-
-
     /**
-     * 添加sorted set
-     *
+     * 添加zset
+     * @author choice
      * @param key
      * @param value
      * @param score
@@ -124,6 +148,7 @@ public class JedisUtil {
 
     /**
      * 返回指定位置的集合元素,0为第一个元素，-1为最后一个元素
+     * @author choice
      * @param key
      * @param start
      * @param end
@@ -138,6 +163,7 @@ public class JedisUtil {
 
     /**
      * 获取给定区间的元素，原始按照权重由高到低排序
+     * @author choice
      * @param key
      * @param start
      * @param end
@@ -152,7 +178,7 @@ public class JedisUtil {
 
     /**
      * 添加对应关系，如果对应关系已存在，则覆盖
-     *
+     * @author choice
      * @param key
      * @param map 对应关系
      * @return 状态，成功返回OK
@@ -166,7 +192,7 @@ public class JedisUtil {
 
     /**
      * 向List头部追加记录
-     *
+     * @author choice
      * @param key
      * @param value
      * @return 记录总数
@@ -179,8 +205,8 @@ public class JedisUtil {
     }
 
     /**
-     * 删除
-     *
+     * 删除 key
+     * @author choice
      * @param key
      * @return
      */
@@ -193,6 +219,7 @@ public class JedisUtil {
 
     /**
      * 从集合中删除成员
+     * @author choice
      * @param key
      * @param value
      * @return 返回1成功
@@ -205,6 +232,13 @@ public class JedisUtil {
     }
 
 
+    /**
+     * 删除指定db的key
+     * @author choice
+     * @param dbIndex
+     * @param key
+     * @throws Exception
+     */
     public void deleteByKey(int dbIndex, byte[] key) throws Exception {
         Jedis jedis = getJedis();
         jedis.select(dbIndex);
@@ -216,6 +250,7 @@ public class JedisUtil {
 
     /**
      * 获取总数量
+     * @author choice
      * @param key
      * @return
      */
@@ -228,6 +263,7 @@ public class JedisUtil {
 
     /**
      * 是否存在KEY
+     * @author choice
      * @param key
      * @return
      */
@@ -240,6 +276,7 @@ public class JedisUtil {
 
     /**
      * 重命名KEY
+     * @author choice
      * @param oldKey
      * @param newKey
      * @return
@@ -253,6 +290,7 @@ public class JedisUtil {
 
     /**
      * 设置失效时间
+     * @author choice
      * @param key
      * @param seconds
      */
@@ -264,6 +302,7 @@ public class JedisUtil {
 
     /**
      * 删除失效时间
+     * @author choice
      * @param key
      */
     public void persist(String key) {
@@ -275,6 +314,7 @@ public class JedisUtil {
 
     /**
      * 返回指定key序列值
+     * @author choice
      * @param key
      * @return
      */
@@ -286,6 +326,17 @@ public class JedisUtil {
     }
 
 
+    /**
+     * 插入hash
+     * @param key
+     * @param field
+     * @param value
+     * @return 0失败 1成功
+     */
+    public long hset(byte[] key,byte[] field,byte[] value){
+        Jedis jedis = getJedis();
+        return jedis.hset(key,field,value);
+    }
 
     /**
      * hgetAll
@@ -309,32 +360,6 @@ public class JedisUtil {
         Map<String,String> hResult = jedis.hgetAll(key);
         jedis.close();
         return hResult;
-    }
-
-
-    /**
-     * hgetAll
-     * @author choice
-     * @param keys
-     */
-    public Map<String, Map<byte[],byte[]>> hgetAllByPipelined(List<String> keys){
-        Jedis jedis = getJedis();
-        Pipeline pipeline = jedis.pipelined();
-        Map<String, Response<Map<byte[],byte[]>>> responseMap = new HashMap<>();
-        for (String key : keys) {
-            try {
-                responseMap.put(key, pipeline.hgetAll(key.getBytes("UTF-8")));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-        }
-        pipeline.sync();
-        Map<String, Map<byte[],byte[]>> map = new HashMap<>();
-        for (Map.Entry<String, Response<Map<byte[],byte[]>>> entry : responseMap.entrySet()) {
-            map.put(entry.getKey(), entry.getValue().get());
-        }
-        jedis.close();
-        return map;
     }
 
     /**
@@ -363,14 +388,107 @@ public class JedisUtil {
     }
 
     /**
-     * 插入hash
-     * @param key
-     * @param field
-     * @param value
-     * @return 0失败 1成功
+     * hgetAll
+     * @author choice
+     * @param keys
      */
-    public long hset(byte[] key,byte[] field,byte[] value){
+    public Map<String, Map<byte[],byte[]>> hgetAllByPipelined(List<String> keys){
         Jedis jedis = getJedis();
-        return jedis.hset(key,field,value);
+        Pipeline pipeline = jedis.pipelined();
+        Map<String, Response<Map<byte[],byte[]>>> responseMap = new HashMap<>();
+        for (String field : keys) {
+            try {
+                responseMap.put(field, pipeline.hgetAll(field.getBytes("UTF-8")));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        pipeline.sync();
+        Map<String, Map<byte[],byte[]>> map = new HashMap<>();
+        for (Map.Entry<String, Response<Map<byte[],byte[]>>> entry : responseMap.entrySet()) {
+            map.put(entry.getKey(), entry.getValue().get());
+        }
+        jedis.close();
+        return map;
     }
+
+
+    /**
+     * hgetAll by cluster pipelined
+     * @author choice
+     * @param key
+     */
+    public Map<String, Map<byte[],byte[]>> hgetAllByClusterPipelined(String key){
+        initJedisNodeMap();
+        Jedis jedis = getJedis(key);
+        Pipeline pipeline = jedis.pipelined();
+        Map<String, Response<Map<byte[],byte[]>>> responseMap = new HashMap<>();
+//        for (String field : fields) {
+            try {
+                responseMap.put(key, pipeline.hgetAll(key.getBytes("UTF-8")));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+//        }
+        pipeline.sync();
+        Map<String, Map<byte[],byte[]>> map = new HashMap<>();
+        for (Map.Entry<String, Response<Map<byte[],byte[]>>> entry : responseMap.entrySet()) {
+            map.put(entry.getKey(), entry.getValue().get());
+        }
+        jedis.close();
+        return map;
+    }
+
+    /**
+     * 按键获取插槽，按位获取主机，按主机获取JedisPool，按位获取Jedis
+     * @author choice
+     * @param key
+     * @return
+     */
+    public Jedis getJedis(String key) {
+        int slot = JedisClusterCRC16.getSlot(key);
+        Map.Entry<Long, String> entry = slotHostMap.lowerEntry(Long.valueOf(slot));
+        return nodeMap.get(entry.getValue()).getResource();
+    }
+
+    /**
+     * @author choice
+     * 初始化 jedisNode
+     * 获取nodeMap <String,JedisPool>，关键节点为主机。
+     * 从它的任意主机获取插槽分布信息。
+     */
+    public void initJedisNodeMap() {
+        try {
+            nodeMap = jedisCluster.getClusterNodes();
+            String anyHost = nodeMap.keySet().iterator().next();
+            slotHostMap = getSlotHostMap(anyHost);
+        }catch (JedisClusterException e){
+            logger.error(e.getMessage());
+        }
+    }
+
+    /**
+     * @author choice
+     * 将槽位分布保存为TreeMap
+     * @param anyHostAndPortStr
+     * @return
+     */
+    public static TreeMap<Long, String> getSlotHostMap(String anyHostAndPortStr) {
+        TreeMap<Long, String> tree = new TreeMap<>();
+        String parts[] = anyHostAndPortStr.split(":");
+        HostAndPort anyHostAndPort = new HostAndPort(parts[0], Integer.parseInt(parts[1]));
+        try (Jedis jedis = new Jedis(anyHostAndPort.getHost(), anyHostAndPort.getPort())) {
+            List<Object> list = jedis.clusterSlots();
+            for (Object object : list) {
+                List<Object> list1 = (List<Object>) object;
+                List<Object> master = (List<Object>) list1.get(2);
+                String hostAndPort = new String((byte[]) master.get(0)) + ":" + master.get(1);
+                tree.put((Long) list1.get(0), hostAndPort);
+                tree.put((Long) list1.get(1), hostAndPort);
+            }
+        }
+        return tree;
+    }
+
+
 }

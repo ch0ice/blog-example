@@ -19,10 +19,11 @@ public class TestRedisController {
     @GetMapping("testRedis")
     public String testRedis(){
 //        testRedisService.insertData(1000000);
-        testRedisService.testJedisHGETALL();
-        testRedisService.testJedisByPipelinedHGETALL();
-        testRedisService.testRedisTempHGETALL();
-        testRedisService.testRedisTempByPiperlinedHGETALL();
+//        testRedisService.testJedisHGETALL();
+//        testRedisService.testJedisByPipelinedHGETALL();
+//        testRedisService.testRedisTempHGETALL();
+//        testRedisService.testRedisTempByPiperlinedHGETALL();
+        testRedisService.testJedisByClusterPipelinedHGETALL();
         return "Hello Test Redis Is Single Command，This Example Use Jedis 2.9，Spring Boot 1.5.4";
     }
 }

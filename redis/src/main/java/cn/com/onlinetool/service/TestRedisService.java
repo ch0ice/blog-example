@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.JedisCluster;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
@@ -124,6 +125,18 @@ public class TestRedisService {
         return runTime;
     }
 
+    /**
+     * @author choice
+     * @return 运行时长
+     */
+    public long testJedisByClusterPipelinedHGETALL(){
+        long startTime = System.currentTimeMillis();
+        Map<String, Map<byte[],byte[]>> pResult = jedisUtil.hgetAllByClusterPipelined(redisKey);
+        long endTime = System.currentTimeMillis();
+        long runTime = endTime - startTime;
+        logger.info("hGetAll by jedis is ClusterPipelined run time：" + runTime + "ms");
+        return runTime;
+    }
 
 
 }

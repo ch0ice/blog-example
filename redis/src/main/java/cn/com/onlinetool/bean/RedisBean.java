@@ -10,9 +10,8 @@ public class RedisBean {
     /** 单点 */
     private String singleHost;
     private int singlePort;
-    /** 集群 */
-    private String clusterHost;
-    private String clusterPort;
+    /** 集群节点(ip:port,ip:port) */
+    private String clusterNode;
     /** 哨兵 */
     private String sentinelMaster;
     private String sentinelNode;
@@ -48,20 +47,12 @@ public class RedisBean {
         this.singlePort = singlePort;
     }
 
-    public String getClusterHost() {
-        return clusterHost;
+    public String getClusterNode() {
+        return clusterNode;
     }
 
-    public void setClusterHost(String clusterHost) {
-        this.clusterHost = clusterHost;
-    }
-
-    public String getClusterPort() {
-        return clusterPort;
-    }
-
-    public void setClusterPort(String clusterPort) {
-        this.clusterPort = clusterPort;
+    public void setClusterNode(String clusterNode) {
+        this.clusterNode = clusterNode;
     }
 
     public String getSentinelMaster() {

@@ -31,13 +31,13 @@ public class DataSourceProperties {
         }
         redisProperties.setSingleHost(properties.getProperty("redis.single.host"));
         redisProperties.setSinglePort(Integer.parseInt(properties.getProperty("redis.single.port")));
-        redisProperties.setClusterHost(properties.getProperty("redis.cluster.host"));
-        redisProperties.setClusterPort(properties.getProperty("redis.cluster.port"));
+        redisProperties.setClusterNode(properties.getProperty("redis.cluster.node"));
         redisProperties.setSentinelMaster(properties.getProperty("redis.sentinel.master"));
         redisProperties.setSentinelNode(properties.getProperty("redis.sentinel.node"));
 
         redisProperties.setPass(properties.getProperty("redis.pass"));
         redisProperties.setTimeout(Integer.parseInt(properties.getProperty("redis.timeout")));
+        redisProperties.setMinIdle(Integer.parseInt(properties.getProperty("redis.minIdle")));
         redisProperties.setMaxIdle(Integer.parseInt(properties.getProperty("redis.maxIdle")));
         redisProperties.setMaxTotal(Integer.parseInt(properties.getProperty("redis.maxTotal")));
         redisProperties.setMaxWaitMillis(Integer.parseInt(properties.getProperty("redis.maxWaitMillis")));
