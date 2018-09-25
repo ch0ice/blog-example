@@ -312,19 +312,6 @@ public class JedisUtil {
     }
 
 
-    /**
-     * 返回指定key序列值
-     * @author choice
-     * @param key
-     * @return
-     */
-    public long incr(String key){
-        Jedis jedis = getJedis();
-        long l = jedis.incr(key);
-        jedis.close();
-        return l;
-    }
-
 
     /**
      * 插入hash
@@ -335,7 +322,48 @@ public class JedisUtil {
      */
     public long hset(byte[] key,byte[] field,byte[] value){
         Jedis jedis = getJedis();
-        return jedis.hset(key,field,value);
+        long result = jedis.hset(key,field,value);
+        jedis.close();
+        return result;
+    }
+
+    /**
+     * 插入hash
+     * @param key
+     * @param field
+     * @param value
+     * @return 0失败 1成功
+     */
+    public long hset(String key,String field,String value){
+        Jedis jedis = getJedis();
+        long result = jedis.hset(key,field,value);
+        jedis.close();
+        return result;
+    }
+
+    /**
+     * hgetAll
+     * @author choice
+     * @param key
+     */
+    public byte[] hGet(byte[] key,byte[] field) {
+        Jedis jedis = getJedis();
+        byte[] hResult = null;
+        hResult = jedis.hget(key,field);
+        jedis.close();
+        return hResult;
+    }
+
+    /**
+     * hgetAll
+     * @author choice
+     * @param key
+     */
+    public String hGet(String key,String field) {
+        Jedis jedis = getJedis();
+        String hResult = jedis.hget(key,field);
+        jedis.close();
+        return hResult;
     }
 
     /**
@@ -346,18 +374,6 @@ public class JedisUtil {
     public Map<byte[],byte[]> hgetAll(byte[] key) {
         Jedis jedis = getJedis();
         Map<byte[],byte[]> hResult = jedis.hgetAll(key);
-        jedis.close();
-        return hResult;
-    }
-
-    /**
-     * hgetAll
-     * @author choice
-     * @param key
-     */
-    public Map<String,String> hgetAll(String key) {
-        Jedis jedis = getJedis();
-        Map<String,String> hResult = jedis.hgetAll(key);
         jedis.close();
         return hResult;
     }
@@ -412,6 +428,27 @@ public class JedisUtil {
         return map;
     }
 
+    /**
+     * hGet by cluster pipelined
+     * @author choice
+     * @param key
+     */
+    public Map<String, byte[]> hGetByClusterPipelined(String key,List<String> fields){
+        initJedisNodeMap();
+        Jedis jedis = getJedis(key);
+        Pipeline pipeline = jedis.pipelined();
+        Map<String, Response<byte[]>> responseMap = new HashMap<>();
+        for (String field : fields) {
+            responseMap.put(field, pipeline.hget(key.getBytes(),field.getBytes()));
+        }
+        pipeline.sync();
+        Map<String, byte[]> map = new HashMap<>();
+        for (Map.Entry<String, Response<byte[]>> entry : responseMap.entrySet()) {
+            map.put(entry.getKey(), entry.getValue().get());
+        }
+        jedis.close();
+        return map;
+    }
 
     /**
      * hgetAll by cluster pipelined

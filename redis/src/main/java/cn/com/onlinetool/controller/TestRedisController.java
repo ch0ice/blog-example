@@ -1,5 +1,6 @@
 package cn.com.onlinetool.controller;
 
+import cn.com.onlinetool.service.TestRedisClusterService;
 import cn.com.onlinetool.service.TestRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestRedisController {
     @Autowired
     private TestRedisService testRedisService;
+    @Autowired
+    private TestRedisClusterService testRedisClusterService;
 
     @GetMapping("testRedis")
     public String testRedis(){
-//        testRedisService.insertData(1000000);
-//        testRedisService.testJedisHGETALL();
-//        testRedisService.testJedisByPipelinedHGETALL();
-//        testRedisService.testRedisTempHGETALL();
-//        testRedisService.testRedisTempByPiperlinedHGETALL();
-        testRedisService.testJedisByClusterPipelinedHGETALL();
+//        testRedisClusterService.insertTestDataByJedisCluster(1000000);
+
+        //测试 集群单命令管道 和普通单命令
+        testRedisClusterService.testHGetAllByJedisCluster();
+        testRedisClusterService.testHGetAllByJedisClusterPipelined();
+        testRedisClusterService.testHGetByJedisCluster();
+        testRedisClusterService.testHGetByJedisClusterPipelined();
+
+        //测试 单点或哨兵单命令管道 和普通单命令
+        testRedisService.testHGetByRedisTemp();
+        testRedisService.testHGetByJedis();
+        testRedisService.testHGetAllByRedisTemp();
+        testRedisService.testHGetAllByJedis();
+        testRedisService.testHGetAllByRedisTempPiperlined();
+        testRedisService.testHGetAllByJedisPipelined();
+
         return "Hello Test Redis Is Single Command，This Example Use Jedis 2.9，Spring Boot 1.5.4";
     }
 }
