@@ -7,6 +7,7 @@ import redis.clients.jedis.*;
 import redis.clients.jedis.exceptions.JedisClusterException;
 import redis.clients.util.JedisClusterCRC16;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -133,6 +134,16 @@ public class JedisUtil {
         if(null != jedisPool){
             jedisPool.destroy();
         }
+        if(null != jedisSentinelPool){
+            jedisSentinelPool.destroy();
+        }
+        if(null != jedisCluster){
+            try {
+                jedisCluster.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -145,7 +156,7 @@ public class JedisUtil {
     public void zadd(String key, String value, double score) {
         Jedis jedis = getJedis();
         jedis.zadd(key, score, value);
-        jedis.close();
+        destroy();
     }
 
     /**
@@ -159,7 +170,7 @@ public class JedisUtil {
     public Set<byte[]> zrange(String key, int start, int end) {
         Jedis jedis = getJedis();
         Set<byte[]> set = jedis.zrange(key.getBytes(), start, end);
-        jedis.close();
+        destroy();
         return set;
     }
 
@@ -174,7 +185,7 @@ public class JedisUtil {
     public Set<String> zrevrange(String key, int start, int end) {
         Jedis jedis = getJedis();
         Set<String> set = jedis.zrevrange(key, start, end);
-        jedis.close();
+        destroy();
         return set;
     }
 
@@ -188,7 +199,7 @@ public class JedisUtil {
     public String hmset(String key, Map<String, String> map) {
         Jedis jedis = getJedis();
         String s = jedis.hmset(key, map);
-        jedis.close();
+        destroy();
         return s;
     }
 
@@ -202,7 +213,7 @@ public class JedisUtil {
     private long rpush(byte[] key, byte[] value) {
         Jedis jedis = getJedis();
         long count = jedis.rpush(key, value);
-        jedis.close();
+        destroy();
         return count;
     }
 
@@ -215,7 +226,7 @@ public class JedisUtil {
     public long del(String key) {
         Jedis jedis = getJedis();
         long s = jedis.del(key);
-        jedis.close();
+        destroy();
         return s;
     }
 
@@ -229,7 +240,7 @@ public class JedisUtil {
     public long zrem(String key, String... value) {
         Jedis jedis = getJedis();
         long s = jedis.zrem(key, value);
-        jedis.close();
+        destroy();
         return s;
     }
 
@@ -245,7 +256,7 @@ public class JedisUtil {
         Jedis jedis = getJedis();
         jedis.select(dbIndex);
         jedis.del(key);
-        jedis.close();
+        destroy();
 
     }
 
@@ -259,7 +270,7 @@ public class JedisUtil {
     public long zcard(String key) {
         Jedis jedis = getJedis();
         long count = jedis.zcard(key);
-        jedis.close();
+        destroy();
         return count;
     }
 
@@ -272,7 +283,7 @@ public class JedisUtil {
     public boolean exists(String key) {
         Jedis jedis = getJedis();
         boolean exists = jedis.exists(key);
-        jedis.close();
+        destroy();
         return exists;
     }
 
@@ -286,7 +297,7 @@ public class JedisUtil {
     public String rename(String oldKey, String newKey) {
         Jedis jedis = getJedis();
         String result = jedis.rename(oldKey, newKey);
-        jedis.close();
+        destroy();
         return result;
     }
 
@@ -299,7 +310,7 @@ public class JedisUtil {
     public void expire(String key, int seconds) {
         Jedis jedis = getJedis();
         jedis.expire(key, seconds);
-        jedis.close();
+        destroy();
     }
 
     /**
@@ -310,7 +321,7 @@ public class JedisUtil {
     public void persist(String key) {
         Jedis jedis = getJedis();
         jedis.persist(key);
-        jedis.close();
+        destroy();
     }
 
 
@@ -325,7 +336,7 @@ public class JedisUtil {
     public long hset(byte[] key,byte[] field,byte[] value){
         Jedis jedis = getJedis();
         long result = jedis.hset(key,field,value);
-        jedis.close();
+        destroy();
         return result;
     }
 
@@ -339,12 +350,12 @@ public class JedisUtil {
     public long hset(String key,String field,String value){
         Jedis jedis = getJedis();
         long result = jedis.hset(key,field,value);
-        jedis.close();
+        destroy();
         return result;
     }
 
     /**
-     * hgetAll
+     * hGet
      * @author choice
      * @param key
      */
@@ -352,19 +363,19 @@ public class JedisUtil {
         Jedis jedis = getJedis();
         byte[] hResult = null;
         hResult = jedis.hget(key,field);
-        jedis.close();
+        destroy();
         return hResult;
     }
 
     /**
-     * hgetAll
+     * hGet
      * @author choice
      * @param key
      */
     public String hGet(String key,String field) {
         Jedis jedis = getJedis();
         String hResult = jedis.hget(key,field);
-        jedis.close();
+        destroy();
         return hResult;
     }
 
@@ -377,6 +388,7 @@ public class JedisUtil {
         Jedis jedis = getJedis();
         Map<byte[],byte[]> hResult = jedis.hgetAll(key);
         jedis.close();
+        destroy();
         return hResult;
     }
 
@@ -401,7 +413,7 @@ public class JedisUtil {
         for (Map.Entry<String, Response<Set<byte[]>>> entry : responseMap.entrySet()) {
             map.put(entry.getKey(), entry.getValue().get());
         }
-        jedis.close();
+        destroy();
         return map;
     }
 
@@ -410,23 +422,21 @@ public class JedisUtil {
      * @author choice
      * @param keys
      */
-    public Map<String, Map<byte[],byte[]>> hgetAllByPipelined(List<String> keys){
+    public Map<String, Map<byte[],byte[]>> hgetAllByPipelined(String keys){
         Jedis jedis = getJedis();
         Pipeline pipeline = jedis.pipelined();
         Map<String, Response<Map<byte[],byte[]>>> responseMap = new HashMap<>();
-        for (String field : keys) {
-            try {
-                responseMap.put(field, pipeline.hgetAll(field.getBytes("UTF-8")));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+        try {
+            responseMap.put(keys, pipeline.hgetAll(keys.getBytes("UTF-8")));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
         }
         pipeline.sync();
         Map<String, Map<byte[],byte[]>> map = new HashMap<>();
         for (Map.Entry<String, Response<Map<byte[],byte[]>>> entry : responseMap.entrySet()) {
             map.put(entry.getKey(), entry.getValue().get());
         }
-        jedis.close();
+        destroy();
         return map;
     }
 
@@ -448,7 +458,7 @@ public class JedisUtil {
         for (Map.Entry<String, Response<byte[]>> entry : responseMap.entrySet()) {
             map.put(entry.getKey(), entry.getValue().get());
         }
-        jedis.close();
+        destroy();
         return map;
     }
 
@@ -463,18 +473,19 @@ public class JedisUtil {
         Pipeline pipeline = jedis.pipelined();
         Map<String, Response<Map<byte[],byte[]>>> responseMap = new HashMap<>();
 //        for (String field : fields) {
-            try {
-                responseMap.put(key, pipeline.hgetAll(key.getBytes("UTF-8")));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+        try {
+            responseMap.put(key, pipeline.hgetAll(key.getBytes("UTF-8")));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 //        }
         pipeline.sync();
         Map<String, Map<byte[],byte[]>> map = new HashMap<>();
         for (Map.Entry<String, Response<Map<byte[],byte[]>>> entry : responseMap.entrySet()) {
             map.put(entry.getKey(), entry.getValue().get());
         }
-        jedis.close();
+//        jedis.close();
+        destroy();
         return map;
     }
 
@@ -534,3 +545,4 @@ public class JedisUtil {
 
 
 }
+
