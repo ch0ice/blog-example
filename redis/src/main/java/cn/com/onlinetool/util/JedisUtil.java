@@ -12,7 +12,8 @@ import java.util.*;
 
 /**
  * @author choice
- * @description:
+ * @description: 集群模式 此工具类内函数除集群管道函数外，其他函数不可以使用，
+ * 请通过getClusterInstance()函数获取集群实例使用。
  * @date 2018/8/31 13:57
  */
 public class JedisUtil {
@@ -112,6 +113,7 @@ public class JedisUtil {
     }
 
     /**
+     * 不支持集群
      * @author choice
      * 从jedis连接池中获取获取jedis对象
      * @return Jedis 连接实例对象
@@ -477,6 +479,7 @@ public class JedisUtil {
     }
 
     /**
+     * 集群函数
      * 按键获取插槽，按位获取主机，按主机获取JedisPool，按位获取Jedis
      * @author choice
      * @param key
@@ -490,6 +493,7 @@ public class JedisUtil {
 
     /**
      * @author choice
+     * 集群函数
      * 初始化 jedisNode
      * 获取nodeMap <String,JedisPool>，关键节点为主机。
      * 从它的任意主机获取插槽分布信息。
@@ -506,6 +510,7 @@ public class JedisUtil {
 
     /**
      * @author choice
+     * 集群函数
      * 将槽位分布保存为TreeMap
      * @param anyHostAndPortStr
      * @return
