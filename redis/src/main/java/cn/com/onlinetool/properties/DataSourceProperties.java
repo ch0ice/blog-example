@@ -21,7 +21,7 @@ public class DataSourceProperties {
     static {
         Properties properties = new Properties();
         // 使用ClassLoader加载properties配置文件生成对应的输入流
-        InputStream in = DataSourceProperties.class.getClassLoader().getResourceAsStream("application.properties");
+        InputStream in = DataSourceProperties.class.getClassLoader().getResourceAsStream("jedisConfig.properties");
         // 使用properties对象加载输入流
         try {
             properties.load(in);

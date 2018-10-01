@@ -156,7 +156,7 @@ public class JedisUtil {
     public void zadd(String key, String value, double score) {
         Jedis jedis = getJedis();
         jedis.zadd(key, score, value);
-        destroy();
+        jedis.close();
     }
 
     /**
@@ -170,7 +170,7 @@ public class JedisUtil {
     public Set<byte[]> zrange(String key, int start, int end) {
         Jedis jedis = getJedis();
         Set<byte[]> set = jedis.zrange(key.getBytes(), start, end);
-        destroy();
+        jedis.close();
         return set;
     }
 
@@ -185,7 +185,7 @@ public class JedisUtil {
     public Set<String> zrevrange(String key, int start, int end) {
         Jedis jedis = getJedis();
         Set<String> set = jedis.zrevrange(key, start, end);
-        destroy();
+        jedis.close();
         return set;
     }
 
@@ -199,7 +199,7 @@ public class JedisUtil {
     public String hmset(String key, Map<String, String> map) {
         Jedis jedis = getJedis();
         String s = jedis.hmset(key, map);
-        destroy();
+        jedis.close();
         return s;
     }
 
@@ -213,7 +213,7 @@ public class JedisUtil {
     private long rpush(byte[] key, byte[] value) {
         Jedis jedis = getJedis();
         long count = jedis.rpush(key, value);
-        destroy();
+        jedis.close();
         return count;
     }
 
@@ -226,7 +226,7 @@ public class JedisUtil {
     public long del(String key) {
         Jedis jedis = getJedis();
         long s = jedis.del(key);
-        destroy();
+        jedis.close();
         return s;
     }
 
@@ -240,7 +240,7 @@ public class JedisUtil {
     public long zrem(String key, String... value) {
         Jedis jedis = getJedis();
         long s = jedis.zrem(key, value);
-        destroy();
+        jedis.close();
         return s;
     }
 
@@ -256,7 +256,7 @@ public class JedisUtil {
         Jedis jedis = getJedis();
         jedis.select(dbIndex);
         jedis.del(key);
-        destroy();
+        jedis.close();
 
     }
 
@@ -270,7 +270,7 @@ public class JedisUtil {
     public long zcard(String key) {
         Jedis jedis = getJedis();
         long count = jedis.zcard(key);
-        destroy();
+        jedis.close();
         return count;
     }
 
@@ -283,7 +283,7 @@ public class JedisUtil {
     public boolean exists(String key) {
         Jedis jedis = getJedis();
         boolean exists = jedis.exists(key);
-        destroy();
+        jedis.close();
         return exists;
     }
 
@@ -297,7 +297,7 @@ public class JedisUtil {
     public String rename(String oldKey, String newKey) {
         Jedis jedis = getJedis();
         String result = jedis.rename(oldKey, newKey);
-        destroy();
+        jedis.close();
         return result;
     }
 
@@ -310,7 +310,7 @@ public class JedisUtil {
     public void expire(String key, int seconds) {
         Jedis jedis = getJedis();
         jedis.expire(key, seconds);
-        destroy();
+        jedis.close();
     }
 
     /**
@@ -321,7 +321,7 @@ public class JedisUtil {
     public void persist(String key) {
         Jedis jedis = getJedis();
         jedis.persist(key);
-        destroy();
+        jedis.close();
     }
 
 
@@ -336,7 +336,7 @@ public class JedisUtil {
     public long hset(byte[] key,byte[] field,byte[] value){
         Jedis jedis = getJedis();
         long result = jedis.hset(key,field,value);
-        destroy();
+        jedis.close();
         return result;
     }
 
@@ -350,7 +350,7 @@ public class JedisUtil {
     public long hset(String key,String field,String value){
         Jedis jedis = getJedis();
         long result = jedis.hset(key,field,value);
-        destroy();
+        jedis.close();
         return result;
     }
 
@@ -363,7 +363,7 @@ public class JedisUtil {
         Jedis jedis = getJedis();
         byte[] hResult = null;
         hResult = jedis.hget(key,field);
-        destroy();
+        jedis.close();
         return hResult;
     }
 
@@ -375,7 +375,7 @@ public class JedisUtil {
     public String hGet(String key,String field) {
         Jedis jedis = getJedis();
         String hResult = jedis.hget(key,field);
-        destroy();
+        jedis.close();
         return hResult;
     }
 
@@ -388,7 +388,6 @@ public class JedisUtil {
         Jedis jedis = getJedis();
         Map<byte[],byte[]> hResult = jedis.hgetAll(key);
         jedis.close();
-        destroy();
         return hResult;
     }
 
@@ -413,7 +412,7 @@ public class JedisUtil {
         for (Map.Entry<String, Response<Set<byte[]>>> entry : responseMap.entrySet()) {
             map.put(entry.getKey(), entry.getValue().get());
         }
-        destroy();
+        jedis.close();
         return map;
     }
 
@@ -436,7 +435,7 @@ public class JedisUtil {
         for (Map.Entry<String, Response<Map<byte[],byte[]>>> entry : responseMap.entrySet()) {
             map.put(entry.getKey(), entry.getValue().get());
         }
-        destroy();
+        jedis.close();
         return map;
     }
 
@@ -458,7 +457,7 @@ public class JedisUtil {
         for (Map.Entry<String, Response<byte[]>> entry : responseMap.entrySet()) {
             map.put(entry.getKey(), entry.getValue().get());
         }
-        destroy();
+        jedis.close();
         return map;
     }
 
@@ -473,19 +472,18 @@ public class JedisUtil {
         Pipeline pipeline = jedis.pipelined();
         Map<String, Response<Map<byte[],byte[]>>> responseMap = new HashMap<>();
 //        for (String field : fields) {
-        try {
-            responseMap.put(key, pipeline.hgetAll(key.getBytes("UTF-8")));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+            try {
+                responseMap.put(key, pipeline.hgetAll(key.getBytes("UTF-8")));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
 //        }
         pipeline.sync();
         Map<String, Map<byte[],byte[]>> map = new HashMap<>();
         for (Map.Entry<String, Response<Map<byte[],byte[]>>> entry : responseMap.entrySet()) {
             map.put(entry.getKey(), entry.getValue().get());
         }
-//        jedis.close();
-        destroy();
+        jedis.close();
         return map;
     }
 
@@ -545,4 +543,3 @@ public class JedisUtil {
 
 
 }
-
