@@ -143,9 +143,7 @@ public class TestRedisService {
      */
     public long testHGetAllByJedisPipelined(){
         long startTime = System.currentTimeMillis();
-        List<String> redisKeys = new ArrayList<>();
-        redisKeys.add(REDIS_KEY);
-        Map<String, Map<byte[],byte[]>> result = jedisUtil.hgetAllByPipelined(redisKeys);
+        Map<String, Map<byte[],byte[]>> result = jedisUtil.hgetAllByPipelined(REDIS_KEY);
         long endTime = System.currentTimeMillis();
         long runTime = endTime - startTime;
         logger.info("hGetAll by jedisPipelined run time：" + runTime + "ms");
