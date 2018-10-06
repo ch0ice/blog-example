@@ -1,6 +1,8 @@
 package cn.com.onlinetool.bean;
 
 
+import java.util.Objects;
+
 /**
  * @author choice
  * @description:
@@ -133,5 +135,30 @@ public class RedisBean {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RedisBean redisBean = (RedisBean) o;
+        return singlePort == redisBean.singlePort &&
+                timeout == redisBean.timeout &&
+                maxIdle == redisBean.maxIdle &&
+                minIdle == redisBean.minIdle &&
+                maxTotal == redisBean.maxTotal &&
+                maxWaitMillis == redisBean.maxWaitMillis &&
+                testOnBorrow == redisBean.testOnBorrow &&
+                type == redisBean.type &&
+                Objects.equals(singleHost, redisBean.singleHost) &&
+                Objects.equals(clusterNode, redisBean.clusterNode) &&
+                Objects.equals(sentinelMaster, redisBean.sentinelMaster) &&
+                Objects.equals(sentinelNode, redisBean.sentinelNode) &&
+                Objects.equals(pass, redisBean.pass);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(singleHost, singlePort, clusterNode, sentinelMaster, sentinelNode, pass, timeout, maxIdle, minIdle, maxTotal, maxWaitMillis, testOnBorrow, type);
     }
 }
