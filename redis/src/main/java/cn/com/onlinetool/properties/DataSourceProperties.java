@@ -10,7 +10,7 @@ import java.util.Properties;
 
 /**
  * 数据源接入配置文件
- * @author liujk@mapbar.com;
+ * @author Choice
  * @create 2018-03-27 10:58
  */
 public class DataSourceProperties {
