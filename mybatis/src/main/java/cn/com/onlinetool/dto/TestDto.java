@@ -1,5 +1,12 @@
 package cn.com.onlinetool.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TestDTO {
     private Integer id;
 
@@ -7,21 +14,4 @@ public class TestDTO {
 
     private String password;
 
-    public TestDTO(Integer id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 }
