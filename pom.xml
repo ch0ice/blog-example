@@ -21,7 +21,7 @@
         <module>redis</module>
         <module>mongoDB</module>
         <module>cat</module>
-        <module>mybatis</module>
+        <module>tk-mybatis</module>
         <module>common</module>
     </modules>
 
