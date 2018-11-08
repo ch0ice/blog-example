@@ -16,12 +16,22 @@
     <url>http://www.example.com</url>
 
     <properties>
+        <onlinetool.common.version>1.0-SNAPSHOT</onlinetool.common.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
+        <mybatis.generator.version>1.3.7</mybatis.generator.version>
+        <mapper-spring-boot-starter.version>2.0.3</mapper-spring-boot-starter.version>
+        <pagehelper.version>1.2.5</pagehelper.version>
+        <mysql.connector.version>5.1.46</mysql.connector.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>cn.com.onlinetool</groupId>
+            <artifactId>common</artifactId>
+            <version>${onlinetool.common.version}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -43,30 +53,24 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+            <version>${mysql.connector.version}</version>
         </dependency>
 
-        <!-- mybatis依赖 -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>1.3.1</version>
         </dependency>
-
-        <!-- 分页插件 -->
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+            <version>${mapper-spring-boot-starter.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.1.2</version>
+            <version>${pagehelper.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.0</version>
-        </dependency>
-
-
 
     </dependencies>
 
@@ -105,4 +109,48 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>mybatis_generator</id>
+            <build>
+                <finalName>mybatis_generator</finalName>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                    </plugin>
+
+                    <!-- mybatis-generator -->
+                    <plugin>
+                        <groupId>org.mybatis.generator</groupId>
+                        <artifactId>mybatis-generator-maven-plugin</artifactId>
+                        <version>${mybatis.generator.version}</version>
+                        <configuration>
+                            <configurationFile>${basedir}/src/main/resources/mybatis-generator.xml</configurationFile>
+                            <!--允许移动生成的文件-->
+                            <verbose>true</verbose>
+                            <!--允许覆盖生成的文件-->
+                            <overwrite>true</overwrite>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>Generate MyBatis Artifacts</id>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.mybatis.generator</groupId>
+                                <artifactId>mybatis-generator-core</artifactId>
+                                <version>${mybatis.generator.version}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
