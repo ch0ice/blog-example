@@ -23,6 +23,7 @@
         <module>cat</module>
         <module>tk-mybatis</module>
         <module>common</module>
+        <module>mybatis</module>
     </modules>
 
 
