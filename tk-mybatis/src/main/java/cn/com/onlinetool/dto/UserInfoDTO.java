@@ -5,10 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Test1DTO {
+public class UserInfoDTO {
     private Integer userid;
 
     private String username;
@@ -20,5 +21,6 @@ public class Test1DTO {
     private Date createTime1;
 
     private Date createTime2;
+
 
 }
