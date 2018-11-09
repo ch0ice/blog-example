@@ -143,15 +143,15 @@
 
             <!-- 为生成的接口添加父接口，如果指定，这个属性值应该是一个全限定接口名称。
                 注意: MBG 不验证接口是否存在或者是否是一个有效的接口。-->
-            <property name="rootInterface" value="tk.mybatis.mapper.common.Mapper"/>
+            <!--<property name="rootInterface" value="tk.mybatis.mapper.common.Mapper"/>-->
         </javaClientGenerator>
 
 
         <!-- 因为使用 k.mybatis.mapper 不需要生成任何语句
         警告：以下属性必须有一个为true，因为MBG要求 mapper.xml 中必须包含一条sql语句,否则表会被忽略 -->
-        <table tableName="test" domainObjectName="Test"
-               enableInsert="true"
-               enableSelectByPrimaryKey="false"
+        <table tableName="user" domainObjectName="User"
+               enableInsert="false"
+               enableSelectByPrimaryKey="true"
                enableSelectByExample="false"
                enableUpdateByPrimaryKey="false"
                enableDeleteByPrimaryKey="false"
@@ -161,9 +161,9 @@
                selectByPrimaryKeyQueryId="false"
                selectByExampleQueryId="false"/>
 
-        <table tableName="test1" domainObjectName="Test1"
-               enableInsert="true"
-               enableSelectByPrimaryKey="false"
+        <table tableName="user_info" domainObjectName="UserInfo"
+               enableInsert="false"
+               enableSelectByPrimaryKey="true"
                enableSelectByExample="false"
                enableUpdateByPrimaryKey="false"
                enableDeleteByPrimaryKey="false"
