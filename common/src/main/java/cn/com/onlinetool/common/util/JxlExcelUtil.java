@@ -613,8 +613,7 @@ public class JxlExcelUtil {
                 field.set(o, Double.valueOf(fieldValue.toString()));
             } else if (Character.TYPE == fieldType) {
                 if ((fieldValue != null) && (fieldValue.toString().length() > 0)) {
-                    field.set(o, Character
-                            .valueOf(fieldValue.toString().charAt(0)));
+                    field.set(o, Character.valueOf(fieldValue.toString().charAt(0)));
                 }
             } else if (Date.class == fieldType) {
                 field.set(o, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fieldValue.toString()));

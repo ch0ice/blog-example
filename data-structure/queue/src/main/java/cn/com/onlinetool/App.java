@@ -1,4 +1,4 @@
-package cn.com.onlinetoo;
+package cn.com.onlinetool;
 
 /**
  * @author choice

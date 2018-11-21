@@ -1,0 +1,46 @@
+<config>
+    <input>
+        <jar in="allatori-1.0-SNAPSHOT.jar" out="new-allatori-1.0-SNAPSHOT.jar"/>
+    </input>
+
+    <classpath>
+        <jar name="/Users/choice/.m2/repository/**/*.jar"/>
+    </classpath>
+
+    <!--<expiry date="2000/01/01" string="EXPIRED!"/>-->
+
+    <keep-names>
+        <class template="class * instanceof java.io.Serializable"/>
+        <class template="class * instanceof java.io.Serializable">
+            <field template="static final long serialVersionUID"/>
+            <method template="void writeObject(java.io.ObjectOutputStream)"/>
+            <method template="void readObject(java.io.ObjectInputStream)"/>
+            <method template="java.lang.Object writeReplace()"/>
+            <method template="java.lang.Object readResolve()"/>
+        </class>
+
+        <class access="protected+">
+            <field access="protected+"/>
+            <method access="protected+"/>
+        </class>
+
+        <class template="class cn.com.onlinetool.App">
+            <field access="private+"/>
+            <field template="public int *"/>
+            <field template="static *"/>
+            <field template="protected+ java.lang.String *"/>
+            <method access="private+"/>
+            <method template="private+ set*(**)"/>
+            <method template="private+ get*(**)"/>
+            <method template="private+ *(java.lang.String)" parameters="keep"/>
+            <method template="public main(**)" parameters="keep"/>
+        </class>
+    </keep-names>
+
+    <property name="log-file" value="log.xml"/>
+
+    <ignore-classes>
+        <class template="class *springframework*" />
+    </ignore-classes>
+
+</config>

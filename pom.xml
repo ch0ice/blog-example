@@ -24,6 +24,7 @@
         <module>tk-mybatis</module>
         <module>common</module>
         <module>mybatis</module>
+        <module>allatori</module>
     </modules>
 
 
