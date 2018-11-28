@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>springCloud15X</artifactId>
+    <artifactId>springCloudGreenwich</artifactId>
 
-    <name>springCloud15X</name>
+    <name>springCloudGreenwich</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
