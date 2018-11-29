@@ -19,8 +19,10 @@ public class TestConsulRest {
     TestConsulService testConsulService;
 
     @GetMapping("/getServiceList")
-    public String dc(){
+    public String getServiceList(){
         return testConsulService.getServiceList();
 
     }
+
+
 }

@@ -3,6 +3,7 @@ package cn.com.onlinetool.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author choice
@@ -23,5 +24,15 @@ public class TestEurekaService {
         String services = "Services: " + discoveryClient.getServices();
         System.out.println(services);
         return services;
+    }
+
+    /**
+     * 上传文件
+     * @param file
+     * @return
+     */
+    public String uploadFile(MultipartFile file){
+        System.out.println("fileName：" + file.getOriginalFilename());
+        return file.getOriginalFilename();
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 /**
  * eureka client
  */
+
 @EnableDiscoveryClient
 @SpringBootApplication
 public class EurekaClientApp

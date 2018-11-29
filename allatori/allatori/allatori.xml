@@ -24,7 +24,7 @@
             <method access="protected+"/>
         </class>
 
-        <class template="class cn.com.onlinetool.App">
+        <class template="class cn.com.onlinetool.eurekaConsumerApp">
             <field access="private+"/>
             <field template="public int *"/>
             <field template="static *"/>
