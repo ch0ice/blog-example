@@ -16,9 +16,6 @@
     <url>http://www.example.com</url>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
         <lombok.version>1.18.0</lombok.version>
         <lang3.version>3.8.1</lang3.version>
         <alibaba.fastjson.version>1.2.51</alibaba.fastjson.version>

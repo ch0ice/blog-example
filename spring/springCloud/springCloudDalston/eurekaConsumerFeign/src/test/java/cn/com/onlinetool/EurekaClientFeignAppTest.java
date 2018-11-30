@@ -60,7 +60,8 @@ public class EurekaClientFeignAppTest
         }
 
         MultipartFile multi = new CommonsMultipartFile(fileItem);
-
-        log.info(fileEurekaClientFeign.uploadFile(multi));
+        //调用文件上传api
+        fileEurekaClientFeign.uploadFile(multi);
+        log.info("test end");
     }
 }
