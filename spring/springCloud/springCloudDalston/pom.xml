@@ -23,6 +23,8 @@
         <module>eurekaConsumerRibbon</module>
         <module>consulConsumer</module>
         <module>eurekaConsumerFeign</module>
+        <module>configServer</module>
+        <module>configClient</module>
     </modules>
 
     <properties>
