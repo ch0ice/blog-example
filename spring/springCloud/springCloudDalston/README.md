@@ -45,3 +45,15 @@ Spring Cloud Feign是一套基于Netflix Feign实现的声明式服务调用客�
 Spring Cloud Feign还扩展了对Spring MVC注解的支持，同时还整合了Ribbon和Eureka来提供均衡负载的HTTP客户端实现。
 由于Feign是基于Ribbon实现的，所以它自带了客户端负载均衡功能，也可以通过Ribbon的IRule进行策略扩展。
 另外，Feign还整合的Hystrix来实现服务的容错保护，在Dalston版本中，Feign的Hystrix默认是关闭的。
+
+##### 使用JUnit测试feign文件上传时 报错 
+会报两个错，都不影响测试结果
+1.Exception caught (might be ok if at shutdown)
+java.lang.IllegalStateException: Shutdown in progress
+详细错误信息：https://github.com/spring-cloud/spring-cloud-commons/issues/111
+
+2.org.springframework.beans.factory.BeanCreationNotAllowedException:
+*  Error creating bean with name 'eurekaAutoServiceRegistration':
+*  Singleton bean creation not allowed while singletons of this factory are in destruction
+*  (Do not request a bean from a BeanFactory in a destroy method implementation!)
+相信错误信息：https://github.com/spring-cloud/spring-cloud-netflix/issues/1952
