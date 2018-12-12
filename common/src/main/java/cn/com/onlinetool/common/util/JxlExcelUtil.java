@@ -3,6 +3,7 @@ package cn.com.onlinetool.common.util;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
+import jxl.WorkbookSettings;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
@@ -20,6 +21,21 @@ import java.util.*;
  * @date 2018/10/21 22:07
  */
 public class JxlExcelUtil {
+    private static final String EXCEL_ENCODING = "ISO-8859-1";
+    private static WorkbookSettings workbookSettings;
+
+    static {
+        workbookSettings = new WorkbookSettings();
+        workbookSettings.setEncoding(EXCEL_ENCODING);
+    }
+
+    /**
+     * 设置excel编码
+     * @param encode
+     */
+    public static void setExcelEncoding (String encode){
+        workbookSettings.setEncoding(encode);
+    }
 
     /*<-------------------------导出Excel----------------------------------------------->*/
 
@@ -50,7 +66,8 @@ public class JxlExcelUtil {
         WritableWorkbook wwb;
         try {
             OutputStream out = response.getOutputStream();
-            wwb = Workbook.createWorkbook(out);
+            //设置字符集
+            wwb = Workbook.createWorkbook(out,workbookSettings);
             WritableSheet sheet = wwb.createSheet("sheet1", 0);
             //填充表头
             for (int i = 0; i < fields.length; i++) {
@@ -200,7 +217,7 @@ public class JxlExcelUtil {
         //创建工作簿并发送到OutputStream指定的地方
         WritableWorkbook wwb;
         try {
-            wwb = Workbook.createWorkbook(out);
+            wwb = Workbook.createWorkbook(out,workbookSettings);
 
             //因为2003的Excel一个工作表最多可以有65536条记录，除去列头剩下65535条
             //所以如果记录太多，需要放到多个工作表中，其实就是个分页的过程
@@ -257,7 +274,7 @@ public class JxlExcelUtil {
             LinkedHashMap<String, String> fieldMap
     ) throws Exception {
         //获取工作表
-        Workbook wb = Workbook.getWorkbook(in);
+        Workbook wb = Workbook.getWorkbook(in,workbookSettings);
         List<T> resultList = excelToList(wb,sheetName,entityClass,fieldMap,null,false);
         return resultList;
     }
@@ -280,7 +297,7 @@ public class JxlExcelUtil {
             String[] uniqueFields
     ) throws Exception {
         //获取工作表
-        Workbook wb = Workbook.getWorkbook(in);
+        Workbook wb = Workbook.getWorkbook(in,workbookSettings);
         List<T> resultList = excelToList(wb,sheetName,entityClass,fieldMap,uniqueFields,true);
         return resultList;
     }
@@ -301,7 +318,7 @@ public class JxlExcelUtil {
         //定义要返回的list
         List<T> resultList = new ArrayList<T>();
         //获取工作表
-        Workbook wb = Workbook.getWorkbook(in);
+        Workbook wb = Workbook.getWorkbook(in,workbookSettings);
         Sheet[] sheets = wb.getSheets();
         for(int l = 0; l < sheets.length; l++) {
             Sheet sheet = sheets[l];
@@ -329,7 +346,7 @@ public class JxlExcelUtil {
         //定义要返回的list
         List<T> resultList = new ArrayList<T>();
         //获取工作表
-        Workbook wb = Workbook.getWorkbook(in);
+        Workbook wb = Workbook.getWorkbook(in,workbookSettings);
         Sheet[] sheets = wb.getSheets();
         for(int l = 0; l < sheets.length; l++) {
             Sheet sheet = sheets[l];
@@ -401,12 +418,14 @@ public class JxlExcelUtil {
             //获取Excel中的列名
             for (int i = 0; i < firstRow.length; i++) {
                 excelFieldNames[i] = firstRow[i].getContents().toString().trim();
+                System.out.println(excelFieldNames[i]);
             }
 
             //判断需要的字段在Excel中是否都存在
             boolean isExist = true;
             List<String> excelFieldList = Arrays.asList(excelFieldNames);
             for (String cnName : fieldMap.keySet()) {
+                System.out.println(cnName);
                 if (!excelFieldList.contains(cnName)) {
                     isExist = false;
                     break;
@@ -613,7 +632,8 @@ public class JxlExcelUtil {
                 field.set(o, Double.valueOf(fieldValue.toString()));
             } else if (Character.TYPE == fieldType) {
                 if ((fieldValue != null) && (fieldValue.toString().length() > 0)) {
-                    field.set(o, Character.valueOf(fieldValue.toString().charAt(0)));
+                    field.set(o, Character
+                            .valueOf(fieldValue.toString().charAt(0)));
                 }
             } else if (Date.class == fieldType) {
                 field.set(o, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(fieldValue.toString()));
