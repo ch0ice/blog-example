@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 /**
  * @author choice
@@ -30,10 +32,17 @@ public class TestRest {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/getUsers")
+    public ResponseEntity getUser(){
+        List<User> userList = userService.getUsers();
+        return ResponseEntity.ok(userList);
+    }
+
     @GetMapping("/getUserInfo/{userId}")
     public ResponseEntity getUserInfo(@PathVariable String userId){
         UserInfo userInfo = userInfoService.findById(userId);
         return ResponseEntity.ok(userInfo);
     }
+
 
 }

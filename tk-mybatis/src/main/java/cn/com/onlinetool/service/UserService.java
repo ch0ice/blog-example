@@ -26,4 +26,8 @@ public class UserService extends BaseService<UserMapper, User> {
         List<User> users = mapper.selectByExample(example);
         return users.size() > 0 ? users.get(0) : null;
     }
+
+    public List<User> getUsers(){
+        return mapper.findAll();
+    }
 }

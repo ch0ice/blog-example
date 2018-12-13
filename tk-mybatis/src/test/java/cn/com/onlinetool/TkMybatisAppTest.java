@@ -19,7 +19,7 @@ import java.util.List;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class AppTest
+public class TkMybatisAppTest
 {
     @Autowired
     UserInfoMapper userInfoMapper;

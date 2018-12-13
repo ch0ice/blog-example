@@ -10,9 +10,9 @@ import tk.mybatis.spring.annotation.MapperScan;
  */
 @MapperScan(basePackages = "cn.com.onlinetool.mapper")
 @SpringBootApplication
-public class App {
+public class TkMybatisApp {
     public static void main(String[] args) {
-        SpringApplication app = new SpringApplication(App.class);
+        SpringApplication app = new SpringApplication(TkMybatisApp.class);
         app.run();
         System.out.println("Hello World!");
     }
