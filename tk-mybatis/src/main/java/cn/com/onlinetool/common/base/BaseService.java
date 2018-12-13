@@ -1,6 +1,5 @@
 package cn.com.onlinetool.common.base;
 
-import cn.com.onlinetool.common.CommonPageResult;
 import cn.com.onlinetool.common.util.BeanUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -11,35 +10,34 @@ import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BaseService<M extends Mapper<E>, E, D> {
+public abstract class BaseService<M extends Mapper<E>, E> {
     @Autowired
     protected M mapper;
 
-    public D get(E entity) {
-        return toDto(mapper.selectOne(entity));
+    public E findOne(E entity) {
+        return mapper.selectOne(entity);
     }
 
-    public D getById(Object id) {
-        return toDto(mapper.selectByPrimaryKey(id));
+    public E findById(Object id) {
+        return mapper.selectByPrimaryKey(id);
     }
 
-    public List<D> find() {
-        return toDto(mapper.selectAll());
+    public List<E> find(E entity) {
+        return mapper.select(entity);
     }
 
-    public List<D> find(E entity) {
-        return toDto(mapper.select(entity));
+    public List<E> find() {
+        return mapper.selectAll();
     }
 
     public int count(E entity) {
         return mapper.selectCount(entity);
     }
 
-    public CommonPageResult<D> findPage(D d, int pageNo, int pageSize) {
+    public BasePageResult<E> findPage(E d, int pageNo, int pageSize) {
         Example example = new Example(getEntityClass());
 
         Map<String, Object> map = BeanUtil.beanToMap(d);
@@ -57,30 +55,37 @@ public abstract class BaseService<M extends Mapper<E>, E, D> {
 
         Page<Object> result = PageHelper.startPage(pageNo, pageSize);
 
-        CommonPageResult<D> pageResult = new CommonPageResult<>();
+        BasePageResult<E> pageResult = new BasePageResult<>();
         pageResult.setPageNo(pageNo);
         pageResult.setPageSize(pageSize);
-        pageResult.setPageData(toDto(mapper.selectByExample(example)));
+        pageResult.setPageData(mapper.selectByExample(example));
         pageResult.setTotal(result.getTotal());
         pageResult.setPages(result.getPages());
         return pageResult;
     }
 
     @Transactional
-    public D insert(D dto) {
-        E entity = toEntity(dto);
-        mapper.insertSelective(entity);
-        return toDto(entity);
+    public E insert(E e) {
+        mapper.insertSelective(e);
+        return e;
     }
 
     @Transactional
-    public int updateById(D dto) {
-        return mapper.updateByPrimaryKeySelective(toEntity(dto));
+    public List<E> insertAll(List<E> dList){
+        dList.forEach(d -> {
+            mapper.insertSelective(d);
+        });
+        return dList;
     }
 
     @Transactional
-    public void delete(D dto) {
-        mapper.delete(toEntity(dto));
+    public int updateById(E e) {
+        return mapper.updateByPrimaryKeySelective(e);
+    }
+
+    @Transactional
+    public void delete(E e) {
+        mapper.delete(e);
     }
 
     @Transactional
@@ -88,46 +93,11 @@ public abstract class BaseService<M extends Mapper<E>, E, D> {
         mapper.deleteByPrimaryKey(id);
     }
 
-    protected E toEntity(D dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        E entity = BeanUtil.newInstance(getEntityClass());
-        BeanUtil.copy(entity, dto);
-        return entity;
-    }
-
-    protected D toDto(E entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        D dto = BeanUtil.newInstance(getDtoClass());
-        BeanUtil.copy(dto, entity);
-        return dto;
-    }
-
-    protected List<D> toDto(List<E> entityList) {
-        if (entityList == null) {
-            return null;
-        }
-
-        List<D> dtoList = new ArrayList<>();
-        for (E entity : entityList) {
-            dtoList.add(toDto(entity));
-        }
-
-        return dtoList;
-    }
 
     @SuppressWarnings("unchecked")
     private Class<E> getEntityClass() {
         return (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[1];
     }
 
-    @SuppressWarnings("unchecked")
-    private Class<D> getDtoClass() {
-        return (Class<D>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[2];
-    }
+
 }
