@@ -14,6 +14,9 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.LineBasedFrameDecoder;
+import io.netty.handler.codec.serialization.ClassResolvers;
+import io.netty.handler.codec.serialization.ObjectDecoder;
+import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.util.CharsetUtil;
@@ -127,16 +130,8 @@ public class EchoServer {
 
                 @Override
                 protected void initChannel(SocketChannel socketChannel) throws Exception {
-//                    socketChannel.pipeline().addLast(new FixedLengthFrameDecoder(100));
-
-                    //自定义分隔符
-                    ByteBuf delimiter = Unpooled.copiedBuffer(HostInfo.SEPARATOR.getBytes());
-                    socketChannel.pipeline().addLast(new DelimiterBasedFrameDecoder(1024,delimiter));
-                    //使用系统的分隔符
-//                    socketChannel.pipeline().addLast(new LineBasedFrameDecoder(1024));
-
-                    socketChannel.pipeline().addLast(new StringEncoder(CharsetUtil.UTF_8));
-                    socketChannel.pipeline().addLast(new StringDecoder(CharsetUtil.UTF_8));
+                    socketChannel.pipeline().addLast(new ObjectDecoder(ClassResolvers.cacheDisabled(this.getClass().getClassLoader())));
+                    socketChannel.pipeline().addLast(new ObjectEncoder());
                     socketChannel.pipeline().addLast(new EchoServerHandler());//追加了处理器
                 }
             });

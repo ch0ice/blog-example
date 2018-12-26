@@ -1,5 +1,6 @@
 package cn.com.onlinetool;
 
+import cn.com.onlinetool.common.Member;
 import cn.com.onlinetool.common.constant.HostInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -96,19 +97,43 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
 
 
-    //测试序列化    ···················
+//    //测试序列化    ···················
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+//        try {
+//            String inputData = msg.toString();
+//            System.err.println("{服务器}" + inputData);
+//            //使用系统默认分隔符拆包
+////            String echoData = "[ECHO]" + inputData  + System.getProperties().getProperty("line.separator"); // 将数据回应处理
+//
+//            //使用自定义分隔符拆包
+//            String echoData = "[ECHO]" + inputData  + HostInfo.SEPARATOR; // 将数据回应处理
+//
+//            ctx.writeAndFlush(echoData); //回应的输出操作
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }finally {
+//            ReferenceCountUtil.release(msg); //释放缓存
+//        }
+//
+//    }
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
+//    //测试序列化    ···················
+
+
+
+    //测试序列化  自定义对象  ···················
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
-            String inputData = msg.toString();
-            System.err.println("{服务器}" + inputData);
-            //使用系统默认分隔符拆包
-//            String echoData = "[ECHO]" + inputData  + System.getProperties().getProperty("line.separator"); // 将数据回应处理
-
-            //使用自定义分隔符拆包
-            String echoData = "[ECHO]" + inputData  + HostInfo.SEPARATOR; // 将数据回应处理
-
-            ctx.writeAndFlush(echoData); //回应的输出操作
+            Member member = (Member) msg;
+            System.err.println("{服务器}" + member.toString());
+            member.setName("[ECHO]" + member.getName());
+            ctx.writeAndFlush(member); //回应的输出操作
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -121,7 +146,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         ctx.close();
     }
-    //测试序列化    ···················
+    //测试序列化  自定义对象  ···················
 
 
 }
