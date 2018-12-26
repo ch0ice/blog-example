@@ -1,4 +1,4 @@
-package cn.com.onlinetool.common.util;
+package cn.com.onlinetool.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;

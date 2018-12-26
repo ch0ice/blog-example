@@ -1,7 +1,6 @@
 package cn.com.onlinetool;
 
-
-import cn.com.onlinetool.common.util.InputUtil;
+import cn.com.onlinetool.util.InputUtil;
 
 import java.io.PrintStream;
 import java.net.Socket;

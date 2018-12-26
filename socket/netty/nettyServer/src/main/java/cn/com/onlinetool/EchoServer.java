@@ -1,6 +1,6 @@
 package cn.com.onlinetool;
 
-import cn.com.onlinetool.common.constant.HostInfo;
+import cn.com.onlinetool.constant.HostInfo;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

@@ -2,7 +2,7 @@ package cn.com.onlinetool;
 
 
 
-import cn.com.onlinetool.common.constant.HostInfo;
+import cn.com.onlinetool.constant.HostInfo;
 
 import java.io.IOException;
 import java.io.PrintStream;

@@ -1,7 +1,7 @@
 package cn.com.onlinetool;
 
-import cn.com.onlinetool.common.constant.HostInfo;
-import cn.com.onlinetool.common.util.InputUtil;
+import cn.com.onlinetool.constant.HostInfo;
+import cn.com.onlinetool.util.InputUtil;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;

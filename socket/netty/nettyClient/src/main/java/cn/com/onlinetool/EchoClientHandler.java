@@ -1,8 +1,6 @@
 package cn.com.onlinetool;
 
-import cn.com.onlinetool.common.Member;
-import cn.com.onlinetool.common.constant.HostInfo;
-import cn.com.onlinetool.common.util.InputUtil;
+import cn.com.onlinetool.serialization.serializable.Member;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;

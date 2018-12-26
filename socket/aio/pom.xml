@@ -16,5 +16,16 @@
         <module>aioServer</module>
     </modules>
 
+    <properties>
+        <socket.common.version>1.0-SNAPSHOT</socket.common.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>cn.com.onlinetool</groupId>
+            <artifactId>socket-common</artifactId>
+            <version>${socket.common.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

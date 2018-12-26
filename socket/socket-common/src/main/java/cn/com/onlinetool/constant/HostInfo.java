@@ -1,9 +1,9 @@
-package cn.com.onlinetool.common.constant;
+package cn.com.onlinetool.constant;
 
 /**
  * @author choice
  * @description:
- * @date 2018-12-26 19:38
+ * @date 2018-12-26 20:48
  *
  */
 public interface HostInfo {
