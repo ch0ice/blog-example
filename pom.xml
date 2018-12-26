@@ -40,7 +40,7 @@
         <module>common</module>
         <module>mybatis</module>
         <module>allatori</module>
-        <module>netty</module>
+        <module>socket</module>
     </modules>
 
 
