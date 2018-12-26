@@ -1,5 +1,7 @@
 package cn.com.onlinetool;
 
+import cn.com.onlinetool.common.constant.HostInfo;
+import cn.com.onlinetool.common.util.InputUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,6 +16,8 @@ import io.netty.util.ReferenceCountUtil;
  *
  */
 public class EchoClientHandler extends ChannelInboundHandlerAdapter {
+
+//    //Echo  ````````````````
 //    @Override
 //    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 //        //只要服务器端发送完成数据之后，都会执行此方法进行内容的操作
@@ -37,35 +41,76 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
 //            ReferenceCountUtil.release(msg); //释放缓存
 //        }
 //    }
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
+//    //Echo  ````````````````
 
+
+
+//    //测试拆包解包    ···················
+//    private static final  int REPEAT = 500;//消息重复发送次数（测试战报拆包）
+//    @Override
+//    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+//        for(int i = 0; i < REPEAT; i++){ //消息重复发送
+//            byte[] data = ("[" + i + "]" + " Hello world" + System.getProperties().getProperty("line.separator")).getBytes();
+//            ByteBuf buf = Unpooled.buffer(data.length);
+//            buf.writeBytes(data);
+//            ctx.writeAndFlush(buf);
+//        }
+//    }
+//
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+//        //只要服务器端发送完成数据之后，都会执行此方法进行内容的操作
+//        try {
+//            ByteBuf readBuf = (ByteBuf) msg;
+//            String readData = readBuf.toString(CharsetUtil.UTF_8).trim(); //接收返回数据内容
+//            System.out.println(readData); //输出服务器端的响应内容
+//        }finally {
+//            ReferenceCountUtil.release(msg); //释放缓存
+//        }
+//    }
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
+//    //测试拆包解包    ···················
+
+
+
+
+    //测试序列化    ···················
     private static final  int REPEAT = 500;//消息重复发送次数（测试战报拆包）
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         for(int i = 0; i < REPEAT; i++){ //消息重复发送
-            byte[] data = ("[" + i + "]" + " Hello world" + System.getProperties().getProperty("line.separator")).getBytes();
-            ByteBuf buf = Unpooled.buffer(data.length);
-            buf.writeBytes(data);
-            ctx.writeAndFlush(buf);
+            //使用系统默认分隔符进行拆包
+//            ctx.writeAndFlush("[" + i + "]" + " Hello world" + System.getProperties().getProperty("line.separator"));
+
+            //使用自定义分隔符拆包
+            ctx.writeAndFlush("[" + i + "]" + " Hello world" + HostInfo.SEPARATOR);
         }
-        super.channelActive(ctx);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         //只要服务器端发送完成数据之后，都会执行此方法进行内容的操作
         try {
-            ByteBuf readBuf = (ByteBuf) msg;
-            String readData = readBuf.toString(CharsetUtil.UTF_8).trim(); //接收返回数据内容
+            String readData = msg.toString().trim(); //接收返回数据内容
             System.out.println(readData); //输出服务器端的响应内容
         }finally {
             ReferenceCountUtil.release(msg); //释放缓存
         }
     }
-
-
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
         ctx.close();
     }
+    //测试序列化    ···················
+
 }

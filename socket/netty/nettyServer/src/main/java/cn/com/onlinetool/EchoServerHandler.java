@@ -1,5 +1,6 @@
 package cn.com.onlinetool;
 
+import cn.com.onlinetool.common.constant.HostInfo;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,6 +19,7 @@ import io.netty.util.ReferenceCountUtil;
 public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 
 
+//    //Echo  ``````````````
 //    @Override
 //    public void channelActive(ChannelHandlerContext ctx) throws Exception {
 //        //当客户端了连接成功之后会进行此方法的调用，明确可以给客户端发送一些信息
@@ -27,7 +29,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 //        buf.writeBytes(data); //将数据写入到缓存之中
 //        ctx.writeAndFlush(buf); //强制性发送所有数据
 //    }
-
+//
 //    @Override
 //    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 //        try {
@@ -52,22 +54,61 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 //        }
 //
 //    }
+//
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
+//    //Echo  ``````````````
 
 
+
+
+//    //测试拆包解包    ···················
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+//        try {
+//            //要进行数据信息的额读取操作，对于读取操作之后也可以直接回应
+//            //对于客户端发送过来的信息，由于没有进行指定的数据类型，所以都同意按照Object进行接收。
+//            ByteBuf buf = (ByteBuf) msg; // 默认情况下的类型就是ByteBuf类型
+//            //在进行数据类型过程转换之中还可以进行编码指定（NIO的时候）
+//            String inputData = buf.toString(CharsetUtil.UTF_8); //将字节缓冲区的内容转为字符串 (这里就省去了 好多缓冲区重置的工作量)
+//            System.err.println("{服务器}" + inputData);
+//            String echoData = "[ECHO]" + inputData  + System.getProperties().getProperty("line.separator"); // 将数据回应处理
+//            byte[] data = echoData.getBytes();
+//            ByteBuf echoBuf = Unpooled.buffer(data.length);
+//            echoBuf.writeBytes(data); // 将内容保存在缓存之中
+//            ctx.writeAndFlush(echoBuf); //回应的输出操作
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }finally {
+//            ReferenceCountUtil.release(msg); //释放缓存
+//        }
+//
+//    }
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
+//    //测试拆包解包    ···················
+
+
+
+    //测试序列化    ···················
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         try {
-            //要进行数据信息的额读取操作，对于读取操作之后也可以直接回应
-            //对于客户端发送过来的信息，由于没有进行指定的数据类型，所以都同意按照Object进行接收。
-            ByteBuf buf = (ByteBuf) msg; // 默认情况下的类型就是ByteBuf类型
-            //在进行数据类型过程转换之中还可以进行编码指定（NIO的时候）
-            String inputData = buf.toString(CharsetUtil.UTF_8); //将字节缓冲区的内容转为字符串 (这里就省去了 好多缓冲区重置的工作量)
+            String inputData = msg.toString();
             System.err.println("{服务器}" + inputData);
-            String echoData = "[ECHO]" + inputData  + System.getProperties().getProperty("line.separator"); // 将数据回应处理
-            byte[] data = echoData.getBytes();
-            ByteBuf echoBuf = Unpooled.buffer(data.length);
-            echoBuf.writeBytes(data); // 将内容保存在缓存之中
-            ctx.writeAndFlush(echoBuf); //回应的输出操作
+            //使用系统默认分隔符拆包
+//            String echoData = "[ECHO]" + inputData  + System.getProperties().getProperty("line.separator"); // 将数据回应处理
+
+            //使用自定义分隔符拆包
+            String echoData = "[ECHO]" + inputData  + HostInfo.SEPARATOR; // 将数据回应处理
+
+            ctx.writeAndFlush(echoData); //回应的输出操作
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -75,10 +116,12 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         }
 
     }
-
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         cause.printStackTrace();
         ctx.close();
     }
+    //测试序列化    ···················
+
+
 }

@@ -8,6 +8,6 @@ package cn.com.onlinetool;
  */
 public class EchoClientMain {
     public static void main(String[] args) throws Exception {
-        new EchoClient().run();
+        new EchoClient().runClient();
     }
 }
