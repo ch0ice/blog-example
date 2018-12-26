@@ -1,5 +1,6 @@
 package cn.com.onlinetool;
 
+import cn.com.onlinetool.serialization.messagepack.MsgPackMember;
 import cn.com.onlinetool.serialization.serializable.Member;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -114,10 +115,74 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
 
 
 
-    //测试序列化  自定义对象  ···················
+//    //测试序列化  java原生对象序列化  ···················
+//    @Override
+//    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+//        Member member = new Member();
+//        member.setMid("choice");
+//        member.setName("小泽");
+//        member.setAge(18);
+//        member.setSalary(1.1);
+//        //使用自定义分隔符拆包
+//        ctx.writeAndFlush(member);
+//    }
+//
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+//        //只要服务器端发送完成数据之后，都会执行此方法进行内容的操作
+//        try {
+//            Member member = (Member) msg;
+//            System.out.println(member.toString()); //输出服务器端的响应内容
+//        }finally {
+//            ReferenceCountUtil.release(msg); //释放缓存
+//        }
+//    }
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
+//    //测试序列化  java原生对象序列化  ···················
+
+
+
+
+//    //测试序列化  messagePack对象传输序列化  ···················
+//    @Override
+//    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+//        MsgPackMember member = new MsgPackMember();
+//        member.setMid("choice");
+//        member.setName("小泽");
+//        member.setAge(18);
+//        member.setSalary(1.1);
+//        //使用自定义分隔符拆包
+//        ctx.writeAndFlush(member);
+//    }
+//
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+//        //只要服务器端发送完成数据之后，都会执行此方法进行内容的操作
+//        try {
+//            MsgPackMember member = (MsgPackMember) msg;
+//            System.out.println(member.toString()); //输出服务器端的响应内容
+//        }finally {
+//            ReferenceCountUtil.release(msg); //释放缓存
+//        }
+//    }
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
+//    //测试序列化  messagePack对象传输序列化  ···················
+
+
+
+
+    //测试序列化  marshalling对象传输序列化  原生序列化方式的升级版 ···················
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        Member member = new Member();
+        MsgPackMember member = new MsgPackMember();
         member.setMid("choice");
         member.setName("小泽");
         member.setAge(18);
@@ -130,7 +195,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         //只要服务器端发送完成数据之后，都会执行此方法进行内容的操作
         try {
-            Member member = (Member) msg;
+            MsgPackMember member = (MsgPackMember) msg;
             System.out.println(member.toString()); //输出服务器端的响应内容
         }finally {
             ReferenceCountUtil.release(msg); //释放缓存
@@ -141,6 +206,6 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         ctx.close();
     }
-    //测试序列化  自定义对象  ···················
+    //测试序列化  marshalling对象传输序列化  原生序列化方式的升级版 ···················
 
 }

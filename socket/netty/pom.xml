@@ -21,17 +21,10 @@
     </modules>
 
     <properties>
-        <netty.version>4.1.32.Final</netty.version>
         <socket.common.version>1.0-SNAPSHOT</socket.common.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-            <version>${netty.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>cn.com.onlinetool</groupId>
             <artifactId>socket-common</artifactId>
