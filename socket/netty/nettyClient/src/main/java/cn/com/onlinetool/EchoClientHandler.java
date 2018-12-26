@@ -1,5 +1,7 @@
 package cn.com.onlinetool;
 
+import cn.com.onlinetool.serialization.json.JSONMember;
+import cn.com.onlinetool.serialization.marshalling.MarshallingMember;
 import cn.com.onlinetool.serialization.messagepack.MsgPackMember;
 import cn.com.onlinetool.serialization.serializable.Member;
 import io.netty.buffer.ByteBuf;
@@ -179,10 +181,42 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
 
 
 
-    //测试序列化  marshalling对象传输序列化  原生序列化方式的升级版 ···················
+//    //测试序列化  marshalling对象传输序列化  原生序列化方式的升级版 ···················
+//    @Override
+//    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+//        MarshallingMember member = new MarshallingMember();
+//        member.setMid("choice");
+//        member.setName("小泽");
+//        member.setAge(18);
+//        member.setSalary(1.1);
+//        //使用自定义分隔符拆包
+//        ctx.writeAndFlush(member);
+//    }
+//
+//    @Override
+//    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+//        //只要服务器端发送完成数据之后，都会执行此方法进行内容的操作
+//        try {
+//            MarshallingMember member = (MarshallingMember) msg;
+//            System.out.println(member.toString()); //输出服务器端的响应内容
+//        }finally {
+//            ReferenceCountUtil.release(msg); //释放缓存
+//        }
+//    }
+//    @Override
+//    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//        cause.printStackTrace();
+//        ctx.close();
+//    }
+//    //测试序列化  marshalling对象传输序列化  原生序列化方式的升级版 ···················
+
+
+
+
+    //测试序列化  JSON序列化 传输体积要大 ···················
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        MsgPackMember member = new MsgPackMember();
+        JSONMember member = new JSONMember();
         member.setMid("choice");
         member.setName("小泽");
         member.setAge(18);
@@ -195,7 +229,7 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         //只要服务器端发送完成数据之后，都会执行此方法进行内容的操作
         try {
-            MsgPackMember member = (MsgPackMember) msg;
+            JSONMember member = (JSONMember) msg;
             System.out.println(member.toString()); //输出服务器端的响应内容
         }finally {
             ReferenceCountUtil.release(msg); //释放缓存
@@ -206,6 +240,6 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
         cause.printStackTrace();
         ctx.close();
     }
-    //测试序列化  marshalling对象传输序列化  原生序列化方式的升级版 ···················
+    //测试序列化  JSON序列化 传输体积要大 ···················
 
 }
