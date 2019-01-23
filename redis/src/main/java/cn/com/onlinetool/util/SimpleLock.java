@@ -1,4 +1,4 @@
-package cn.com.onlinetool;
+package cn.com.onlinetool.util;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Transaction;
