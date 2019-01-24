@@ -71,14 +71,11 @@ public class SimpleLock {
 
     public static void main(String[] args) throws InterruptedException {
         SimpleLock simpleLock = new SimpleLock();
-        for (int i = 0; i < 10; i++){
-            String uuid = simpleLock.accquireLock(1000000);
-            if(uuid != null){
-                System.out.println(i + "->获得锁成功");
-            }else {
-                System.out.println("获得锁失败");
-            }
-            break;
+        String uuid = simpleLock.accquireLock(1000000);
+        if(uuid != null){
+            System.out.println("获得锁成功");
+        }else {
+            System.out.println("获得锁失败");
         }
     }
 }
