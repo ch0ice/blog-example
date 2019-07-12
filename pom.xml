@@ -42,6 +42,7 @@
         <module>allatori</module>
         <module>socket</module>
         <module>c-learn</module>
+<!--        <module>open-bug-list</module>-->
     </modules>
 
 
