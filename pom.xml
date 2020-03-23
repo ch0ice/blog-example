@@ -32,7 +32,7 @@
 
     <modules>
         <module>spring</module>
-        <module>data-structure</module>
+        <module>data-struct</module>
         <module>redis</module>
         <module>mongoDB</module>
         <module>cat</module>
@@ -40,9 +40,11 @@
         <module>common</module>
         <module>mybatis</module>
         <module>allatori</module>
-        <module>socket</module>
+        <module>sockettest</module>
         <module>c-learn</module>
-<!--        <module>open-bug-list</module>-->
+        <module>design-patterns</module>
+        <module>netty</module>
+        <!--        <module>open-bug-list</module>-->
     </modules>
 
 
