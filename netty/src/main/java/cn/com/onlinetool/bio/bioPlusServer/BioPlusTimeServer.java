@@ -1,4 +1,4 @@
-package cn.com.onlinetool.bio.falseNioServer;
+package cn.com.onlinetool.bio.bioPlusServer;
 
 import cn.com.onlinetool.bio.server.BioTimeServerHandler;
 
@@ -13,7 +13,7 @@ import java.net.Socket;
  * @author choice
  * @date create in 2020/3/23 14:22
  */
-public class FalseNioTimeServer {
+public class BioPlusTimeServer {
     public static void main(String[] args) {
         int port = 8080;
         if(args != null && args.length > 0){
@@ -28,7 +28,7 @@ public class FalseNioTimeServer {
         try {
             server = new ServerSocket(port);
             System.out.println("The time server is start in port :" + port);
-            FalseNioTimeServerHandlerExecutePoll executor = new FalseNioTimeServerHandlerExecutePoll(10, 20, 1024);
+            BioPlusTimeServerHandlerExecutePoll executor = new BioPlusTimeServerHandlerExecutePoll(10, 20, 1024);
             Socket socket = null;
             while (true){
                 socket = server.accept();
