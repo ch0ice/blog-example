@@ -7,9 +7,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * 伪NIO --- 基于BIO实现的同步非阻塞IO
- * 简单来说就是在传统BIO基础上增加线程池以达到非阻塞的假象，
+ * 伪异步IO --- BIO + 线程池
+ * 简单来说就是在传统BIO基础上增加线程池以达到异步的假象，
  * 这样服务端可以同时接收并处理多个客户端请求
+ * 但是其读写操作没有任何改变，依旧是同步阻塞式。
  * @author choice
  * @date create in 2020/3/23 14:22
  */
