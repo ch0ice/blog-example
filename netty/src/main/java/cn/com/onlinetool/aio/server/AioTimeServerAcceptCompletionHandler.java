@@ -10,6 +10,14 @@ import java.nio.channels.CompletionHandler;
  */
 public class AioTimeServerAcceptCompletionHandler implements CompletionHandler<AsynchronousSocketChannel,AioTimeServerHandler> {
 
+    /**
+     *
+     * @author choice
+     * @date 2020/3/25 10:31
+     * @param result
+     * @param attachment 异步channel携带的附件，通知回调函数的时候作为入参
+     * @return void
+     */
     @Override
     public void completed(AsynchronousSocketChannel result, AioTimeServerHandler attachment) {
         attachment.channel.accept(attachment, this);

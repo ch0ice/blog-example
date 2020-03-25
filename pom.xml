@@ -40,7 +40,6 @@
         <module>common</module>
         <module>mybatis</module>
         <module>allatori</module>
-        <module>sockettest</module>
         <module>c-learn</module>
         <module>design-patterns</module>
         <module>netty</module>
