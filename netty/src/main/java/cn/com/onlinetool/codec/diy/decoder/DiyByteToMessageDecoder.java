@@ -1,10 +1,10 @@
 package cn.com.onlinetool.codec.diy.decoder;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -19,8 +19,6 @@ public class DiyByteToMessageDecoder extends ByteToMessageDecoder {
         byte[] data = new byte[msg.readableBytes()];
         msg.readBytes(data);
 
-        ByteBuf buf = Unpooled.buffer(data.length);
-        buf.writeBytes(data);
-        out.add(buf);
+        out.add(new String(data, StandardCharsets.UTF_8));
     }
 }
