@@ -1,5 +1,10 @@
-package cn.com.onlinetool.codec.inner.delimiter.server;
+package cn.com.onlinetool.codec.inner.lengthfield.server;
 
+import cn.com.onlinetool.codec.inner.delimiter.client.DelimiterNettyTimeClient;
+import cn.com.onlinetool.codec.inner.delimiter.client.DelimiterNettyTimeClientHandler;
+import cn.com.onlinetool.codec.inner.delimiter.server.DelimiterNettyTimeServer;
+import cn.com.onlinetool.codec.inner.delimiter.server.DelimiterNettyTimeServerHandler;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
@@ -9,13 +14,15 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 /**
  * @author choice
- * @date create in 2020/4/1 00:01
+ * @date create in 2020/4/1 00:04
  */
-public class DelimiterNettyTimeServer {
+public class LengthFieldNettyTimeServer {
     private void bind(int port){
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workGroup = new NioEventLoopGroup();
@@ -24,7 +31,7 @@ public class DelimiterNettyTimeServer {
             bootstrap.group(bossGroup,workGroup)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 1024)
-                    .childHandler(new DelimiterNettyTimeServer.ChildChannelHandler());
+                    .childHandler(new LengthFieldNettyTimeServer.ChildChannelHandler());
             //绑定端口，同步等待成功
             ChannelFuture f = bootstrap.bind(port).sync();
             //等待服务器端口监听关闭
@@ -42,8 +49,8 @@ public class DelimiterNettyTimeServer {
 
         @Override
         protected void initChannel(SocketChannel ch) throws Exception {
-            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer("^_^".getBytes())));
-            ch.pipeline().addLast(new DelimiterNettyTimeServerHandler());
+            ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024, 0, 4,0,4));
+            ch.pipeline().addLast(new LengthFieldNettyTimeServerHandler());
         }
     }
 
@@ -57,6 +64,6 @@ public class DelimiterNettyTimeServer {
                 ne.printStackTrace();
             }
         }
-        new DelimiterNettyTimeServer().bind(port);
+        new LengthFieldNettyTimeServer().bind(port);
     }
 }
