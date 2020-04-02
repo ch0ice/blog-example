@@ -1,6 +1,7 @@
 package cn.com.onlinetool.codec.inner.delimiter.server;
 
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -42,7 +43,8 @@ public class DelimiterNettyTimeServer {
 
         @Override
         protected void initChannel(SocketChannel ch) throws Exception {
-            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer("^_^".getBytes())));
+            ByteBuf[] delimiters = new ByteBuf[]{Unpooled.copiedBuffer("*_*".getBytes()),Unpooled.copiedBuffer("^_^".getBytes())};
+            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiters));
             ch.pipeline().addLast(new DelimiterNettyTimeServerHandler());
         }
     }

@@ -1,6 +1,7 @@
 package cn.com.onlinetool.codec.inner.delimiter.client;
 
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -19,12 +20,13 @@ public class DelimiterNettyTimeClient {
         EventLoopGroup clientGroup = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap();
+            ByteBuf[] delimiters = new ByteBuf[]{Unpooled.copiedBuffer("*_*".getBytes()),Unpooled.copiedBuffer("^_^".getBytes())};
             bootstrap.group(clientGroup)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer("^_^".getBytes())));
+                            ch.pipeline().addLast(new DelimiterBasedFrameDecoder(1024, delimiters));
                             ch.pipeline().addLast(new DelimiterNettyTimeClientHandler());
                         }
 

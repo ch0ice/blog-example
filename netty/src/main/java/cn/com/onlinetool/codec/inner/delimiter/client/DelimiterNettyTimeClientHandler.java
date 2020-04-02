@@ -17,7 +17,7 @@ public class DelimiterNettyTimeClientHandler extends ChannelInboundHandlerAdapte
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         for(int i = 0; i < 100; i ++){
-            byte[] req = ("QUERY" + "^_^").getBytes();
+            byte[] req = ("QUERY" + "*_*" + "QUERY" + "^_^").getBytes();
             ByteBuf buf = Unpooled.buffer(req.length);
             buf.writeBytes(req);
             ctx.writeAndFlush(buf);

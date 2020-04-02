@@ -22,7 +22,7 @@ public class DelimiterNettyTimeServerHandler extends ChannelInboundHandlerAdapte
         String body = new String(req, StandardCharsets.UTF_8);
         System.out.println("The time server receive : " + body + "，the count is ：" + ++count);
         String currentTime = "QUERY".equalsIgnoreCase(body) ? new Date(System.currentTimeMillis()).toString() : "QUERY FAIL";
-        currentTime += "^_^";
+        currentTime = currentTime + "^_^";
         ByteBuf res = Unpooled.copiedBuffer(currentTime.getBytes());
         ctx.write(res);
     }
