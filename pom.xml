@@ -42,8 +42,7 @@
         <module>allatori</module>
         <module>c-learn</module>
         <module>design-patterns</module>
-        <module>netty</module>
-        <!--        <module>open-bug-list</module>-->
+        <module>open-bug-list</module>
     </modules>
 
 
