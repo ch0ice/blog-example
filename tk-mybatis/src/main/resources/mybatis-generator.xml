@@ -90,7 +90,7 @@
         <!-- Model模型生成器,用来生成含有主键key的类，记录类 以及查询Example类
             targetPackage     指定生成的model生成所在的包名
             targetProject     指定在该项目下所在的路径 -->
-        <javaModelGenerator targetPackage="cn.com.onlinetool.entity" targetProject="src/main/java">
+        <javaModelGenerator targetPackage="cn.com.onlinetool.mybatis.entity" targetProject="src/main/java">
             <!-- 是否允许子包，即 targetPackage.schemaName.tableName -->
             <property name="enableSubPackages" value="true"/>
 
@@ -120,7 +120,7 @@
             type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
             type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
             type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口 -->
-        <javaClientGenerator targetPackage="cn.com.onlinetool.mapper" targetProject="src/main/java" type="XMLMAPPER">
+        <javaClientGenerator targetPackage="cn.com.onlinetool.mybatis.mapper" targetProject="src/main/java" type="XMLMAPPER">
             <!-- 这个包用于放置生成的接口和实现类。
                 在默认的生成器中，属性"enableSubPackages"用来控制如何计算实际的包。
                 true，如果表的catalog和schema存在，就将他们作为子包加起来。

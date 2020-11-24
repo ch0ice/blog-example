@@ -1,7 +1,7 @@
 package cn.com.onlinetool.service;
 
 import cn.com.onlinetool.properties.DataSourceProperties;
-import cn.com.onlinetool.util.JedisUtil;
+import cn.com.onlinetool.utils.JedisUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;

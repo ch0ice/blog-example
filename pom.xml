@@ -44,6 +44,7 @@
         <module>design-patterns</module>
         <module>open-bug-list</module>
         <module>java</module>
+        <module>utils</module>
     </modules>
 
 

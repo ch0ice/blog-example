@@ -1,8 +1,8 @@
 package cn.com.onlinetool.service;
 
 import cn.com.onlinetool.common.base.BaseService;
-import cn.com.onlinetool.entity.User;
-import cn.com.onlinetool.mapper.UserMapper;
+import cn.com.onlinetool.mybatis.entity.User;
+import cn.com.onlinetool.mybatis.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;

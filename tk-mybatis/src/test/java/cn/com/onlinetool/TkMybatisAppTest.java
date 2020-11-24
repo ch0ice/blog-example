@@ -1,10 +1,10 @@
 package cn.com.onlinetool;
 
 import static org.junit.Assert.assertTrue;
-import cn.com.onlinetool.entity.User;
-import cn.com.onlinetool.entity.UserInfo;
-import cn.com.onlinetool.mapper.UserInfoMapper;
-import cn.com.onlinetool.mapper.UserMapper;
+import cn.com.onlinetool.mybatis.entity.User;
+import cn.com.onlinetool.mybatis.entity.UserInfo;
+import cn.com.onlinetool.mybatis.mapper.UserInfoMapper;
+import cn.com.onlinetool.mybatis.mapper.UserMapper;
 import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;

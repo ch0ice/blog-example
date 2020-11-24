@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<!-- 参考中文文档 http://mbg.cndocs.ml/configreference/context.html -->
+<!-- 参考英文文档 http://www.mybatis.org/generator/ -->
+<generatorConfiguration>
+    <!-- 导入属性配置 -->
+    <properties resource="generator.properties"/>
+
+    <!-- 指定特定数据库的jdbc驱动jar包的位置 -->
+    <classPathEntry location="${jdbc.driverLocation}"/>
+
+
+    <context id="default" targetRuntime="MyBatis3">
+
+        <!-- 元素用来定义注释生成器的属性。
+            注释生成器用来给由MBG生成的多种元素（Java自动，Java方法，XML元素等等）生成注释。
+            默认的注释生成器将 JavaDoc 注释添加到所有生成的Java元素上，从而使Eclipse插件可以使用合并Java的功能。
+            此外，注释还会添加到每一个生成的XML元素。
+            注释的目的还在于告诉用户这个元素是生成的，并且有可能重新生成（也就是说 - 他们不应该被修改）。
+            这个元素是 <context> 元素的一个可选的子元素。 -->
+        <commentGenerator>
+
+            <!-- 这个属性用来指定MBG生成的代码中是否包含任何注释。 这个属性有以下可选值：
+                false	这是默认值 当属性为false或未指定时，所有生成的元素都将包含指示元素是生成元素的注释。
+                true	当属性为true时，不会向任何生成的元素添加注释。
+                警告: 如果将此值设置为true，则将禁用所有代码合并。 -->
+            <property name="suppressAllComments" value="true"/>
+
+            <!-- 这个元素用来指定生成的注释中是否包含生成的日期。
+                这个属性有以下可选值：
+                false	这是默认值 当属性为false或未指定时，所有生成的注释都将包含生成元素时的时间戳。
+                true	当属性为true时，不会将时间戳添加到生成的注释中。 -->
+            <property name="suppressDate" value="true"/>
+
+            <!-- 在将日期写入生成的注释时使用的日期格式字符串。该字符串将用于构造java.text.SimpleDateFormat对象。
+                可以在此处指定该对象的任何有效格式字符串。
+                默认情况下，日期字符串来自 java.util.Date上的toString() 方法。
+                警告：如果 suppressAllComments 选项为 true，则将忽略此选项。
+                警告：如果 suppressDate 选项为 true，则将忽略此选项。 -->
+            <property name="dateFormat" value="yyyy-MM-dd"/>
+
+            <!-- 此属性用于指定MBG是否将在生成的注释中包含来自db表的表和列注释。
+                该属性支持以下值：
+                false   这是默认值 当属性为false或未指定时，生成元素时，所有生成的注释都不会包含db表中的表和列注释。
+                true    当属性为true时，db表中的表和列备注将添加到生成的注释中。
+                警告：如果 suppressAllComments 选项为 true，则将忽略此选项。 -->
+            <property name="addRemarkComments" value="true"/>
+
+        </commentGenerator>
+
+        <!--jdbc的数据库连接 -->
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.connectionURL}"
+                        userId="${jdbc.userId}"
+                        password="${jdbc.password}"/>
+
+
+        <!-- 用于定义Java类型解析器的属性。
+            Java类型解析器用于从数据库列信息中计算Java类型。
+            默认的Java类型解析器试图使JDBC DECIMAL和NUMERIC类型更容易使用，如果可能的话，可以替换整数类型(Long, Integer, Short, etc。)。
+            如果需要不同于默认的行为，也可以替换自己的实现。这个元素是<context>元素的可选子元素。-->
+        <javaTypeResolver>
+            <!-- 应该强制使用java.math.BigDecimal用于DECIMAL和NUMERIC字段，而不是在可能的情况下替换整数类型。
+                这个属性有以下可选值:
+                false 这是默认值
+                    当这个属性是错误的或者没有指定时,默认的Java类型解析器将尝试使JDBC小数和数字类型更容易处理用积分类型如果可能的话。替换规则如下:
+                    如果刻度大于0，或者长度大于18，那么java.math。将使用BigDecimal类型
+                    如果刻度为0，长度为10到18，那么Java类型解析器将替换Java .lang. long。
+                    如果刻度为0，长度为5到9，那么Java类型解析器将替换Java .lang. integer。
+                    如果刻度为0，长度小于5，那么Java类型解析器将替换Java .lang. short。
+                true 当这个属性是真实时,数据库列是DECIMAL或NUMERIC的类型,Java类型解析器将始终使用java.math.BigDecimal。 -->
+            <property name="forceBigDecimals" value="false"/>
+
+            <!-- 此属性用于指定MBG是否应强制在DATE，TIME和TIMESTAMP字段中使用JSR-310数据类型。
+                false   这是默认值，所有时间类型将以 java.util.Date 进行转换。
+                true    则类型将按如下方式解析：
+                    DATE -> java.time.LocalDate
+                    TIME -> java.time.LocalTime
+                    TIMESTAMP -> java.time.LocalDateTime
+                注意：类型解析器将始终解析以下JSR-310类型，无论此属性的值如何：
+                    TIME_WITH_TIMEZONE -> java.time.OffsetTime
+                    TIMESTAMP_WITH_TIMEZONE -> java.time.OffsetDateTime -->
+            <property name="useJSR310Types" value="false"/>
+        </javaTypeResolver>
+
+
+        <!-- Model模型生成器,用来生成含有主键key的类，记录类 以及查询Example类
+            targetPackage     指定生成的model生成所在的包名
+            targetProject     指定在该项目下所在的路径 -->
+        <javaModelGenerator targetPackage="cn.com.onlinetool.mybatis.entity" targetProject="src/main/java">
+            <!-- 是否允许子包，即 targetPackage.schemaName.tableName -->
+            <property name="enableSubPackages" value="true"/>
+
+            <!-- 建立的Model对象是否 不可改变  即生成的Model对象不会有 setter方法，只有构造方法
+                默认值是 false，使用lombok则不需要生成setter方法-->
+            <property name="immutable" value="true"/>
+
+            <!-- 此属性用于选择MyBatis生成器是否为类中每个字段值的类生成构造函数。
+                此外，SQL结果映射将构建为使用构造函数而不是每个字段的“setter”。
+                如果“immutable”属性设置为“true”，则忽略此属性(强制为“true”)。 -->
+            <property name="constructorBased" value="false"/>
+
+            <!-- 此属性用于选择MyBatis生成器是否添加代码以修剪从数据库返回的字符字段中的空白。
+                如果数据库将数据存储在CHAR字段而不是VARCHAR字段中，那么这可能很有用。当为真时，MyBatis生成器将插入代码来修剪字符字段。
+                默认值是 false -->
+            <property name="trimStrings" value="true"/>
+
+        </javaModelGenerator>
+
+        <!-- 生成SQLMAP文件 Mapper映射文件生成所在的目录 为每一个数据库的表生成对应的SqlMap文件
+        默认值是 false -->
+        <sqlMapGenerator targetPackage="sqlmap" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 客户端代码，生成易于使用的针对Model对象和XML配置文件 的代码
+            type="ANNOTATEDMAPPER",生成Java Model 和基于注解的Mapper对象
+            type="MIXEDMAPPER",生成基于注解的Java Model 和相应的Mapper对象
+            type="XMLMAPPER",生成SQLMap XML文件和独立的Mapper接口 -->
+        <javaClientGenerator targetPackage="cn.com.onlinetool.mybatis.mapper" targetProject="src/main/java" type="XMLMAPPER">
+            <!-- 这个包用于放置生成的接口和实现类。
+                在默认的生成器中，属性"enableSubPackages"用来控制如何计算实际的包。
+                true，如果表的catalog和schema存在，就将他们作为子包加起来。
+                false（默认值），计算的package将是targetPackage属性指定的值。
+                MBG 将创建所需的生成包的文件夹。 -->
+            <property name="enableSubPackages" value="true"/>
+
+            <!-- 定义Maper.java 源代码中的ByExample() 方法的可视性，
+                可选的值有：
+                public：这是默认值 生成实现类中的方法将是公开的，并将该接口中声明的方法。
+                private：生成实现类中的方法将是private的，也不会在接口中声明。
+                protected：生成实现类中的方法将是protected的，也不会在接口中声明。
+                default：生成实现类中的方法将是包内可见的，也不会在接口中声明。
+                注意：如果 targetRuntime="MyBatis3",此参数被忽略 -->
+            <property name="exampleMethodVisibility" value=""/>
+
+            <!-- 方法名计数器，用于选择一个方法名称计算器。 方法名称计算器可以用来为DAO方法提供不同的名称。
+                注意：如果 targetRuntime="MyBatis3",此参数被忽略 -->
+            <property name="methodNameCalculator" value=""/>
+
+            <!-- 为生成的接口添加父接口，如果指定，这个属性值应该是一个全限定接口名称。
+                注意: MBG 不验证接口是否存在或者是否是一个有效的接口。-->
+            <!--<property name="rootInterface" value="tk.mybatis.mapper.common.Mapper"/>-->
+        </javaClientGenerator>
+
+
+        <!-- 因为使用 k.mybatis.mapper 不需要生成任何语句
+        警告：以下属性必须有一个为true，因为MBG要求 mapper.xml 中必须包含一条sql语句,否则表会被忽略 -->
+        <table tableName="user" domainObjectName="User"
+               enableInsert="false"
+               enableSelectByPrimaryKey="true"
+               enableSelectByExample="false"
+               enableUpdateByPrimaryKey="false"
+               enableDeleteByPrimaryKey="false"
+               enableDeleteByExample="false"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               selectByPrimaryKeyQueryId="false"
+               selectByExampleQueryId="false"/>
+
+        <table tableName="user_info" domainObjectName="UserInfo"
+               enableInsert="false"
+               enableSelectByPrimaryKey="true"
+               enableSelectByExample="false"
+               enableUpdateByPrimaryKey="false"
+               enableDeleteByPrimaryKey="false"
+               enableDeleteByExample="false"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               selectByPrimaryKeyQueryId="false"
+               selectByExampleQueryId="false"/>
+
+    </context>
+</generatorConfiguration>
