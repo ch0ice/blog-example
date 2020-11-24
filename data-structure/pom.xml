@@ -15,8 +15,6 @@
         <module>chain-table</module>
         <module>array</module>
         <module>vector</module>
-        <module>queue</module>
-        <module>tree</module>
     </modules>
 
 

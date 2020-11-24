@@ -31,19 +31,16 @@
     </dependencies>
 
     <modules>
-        <module>spring</module>
-        <module>data-struct</module>
-        <module>redis</module>
-        <module>mongoDB</module>
-        <module>cat</module>
-        <module>tk-mybatis</module>
-        <module>common</module>
-        <module>mybatis</module>
-        <module>allatori</module>
-        <module>c-learn</module>
+        <module>data-structure</module>
         <module>design-patterns</module>
-        <module>open-bug-list</module>
         <module>java</module>
+        <module>mongo</module>
+        <module>mysql</module>
+        <module>open-bug-list</module>
+        <module>redis</module>
+        <module>spring-cloud</module>
+        <module>struct-and-algorithm</module>
+        <module>tk-mybatis</module>
         <module>utils</module>
     </modules>
 

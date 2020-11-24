@@ -1,6 +1,6 @@
 package cn.com.onlinetool.common.base;
 
-import cn.com.onlinetool.common.util.BeanUtil;
+import cn.com.onlinetool.utils.BeanUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.apache.commons.lang3.StringUtils;

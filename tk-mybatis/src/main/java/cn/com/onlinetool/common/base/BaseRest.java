@@ -1,6 +1,6 @@
 package cn.com.onlinetool.common.base;
 
-import cn.com.onlinetool.common.util.BeanUtil;
+import cn.com.onlinetool.utils.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.ParameterizedType;
