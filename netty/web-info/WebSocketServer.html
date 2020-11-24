@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<br>
+<head>
+    <meta charset="UTF-8">
+    <h1 style="text-align: center;">Netty WebSocket 时间服务器</h1>
+</head>
+
+<body>
+<hr color="blue"/>
+<br>
+<br>
+<form onsubmit="return false;" >
+    <table border="1px" align="center" style="border-collapse:collapse; text-align: center; width: 75%; height: 50%">
+        <tbody>
+            <tr style="height: 50px;">
+                <th>
+                    <span style="font-size: 20px">YourName:</span>
+                    <input style="font-size: 20px" type="text" name="message" value="Choice"/>
+                </th>
+                <th><button style="font-size: 100%; height: 100%; width: 100%" onclick="connect()">连接服务器</button></th>
+                <th><button style="font-size: 100%; height: 100%; width: 100%" onclick="send(this.form.message.value)">发送请求消息</button></th>
+                <th><button style="font-size: 100%; height: 100%; width: 100%" onclick="socket.close()">关闭连接</button></th>
+            </tr>
+            <tr>
+                <td colspan="4"><h2>服务端返回的应答消息</h2></td>
+            </tr>
+            <tr>
+                <td colspan="4"><label for="responseText"></label><textarea id="responseText"
+                                                                            style="font-size:20px; width:99%; height:300px;"></textarea></td>
+            </tr>
+        </tbody>
+
+    </table>
+</form>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    var socket;
+
+    function connect() {
+        if (!window.WebSocket) {
+            window.WebSocket = window.MozWebSocket;
+        }
+        if (window.WebSocket) {
+            socket = new WebSocket("ws://localhost:8080/websocket");
+            socket.onmessage = function (event) {
+                var ta = document.getElementById('responseText');
+                ta.value = ta.value + "\r\n" + event.data;
+                console.log("onmessage");
+                console.log(event);
+            };
+            socket.onopen = function (event) {
+                var ta = document.getElementById('responseText');
+                ta.value = "";
+                ta.value = ta.value + "\r\n打开WebSocket服务正常，浏览器支持WebSocket!";
+                console.log("onopen");
+                console.log(event);
+            };
+            socket.onclose = function (event) {
+                var ta = document.getElementById('responseText');
+                ta.value = ta.value + "\r\nWebSocket 关闭!";
+                console.log("onclose");
+                console.log(event);
+            };
+        } else {
+            alert("抱歉，您的浏览器不支持WebSocket协议!");
+        }
+    }
+
+    function send(message) {
+        if (!window.WebSocket) {
+            return;
+        }
+        if (socket.readyState === WebSocket.OPEN) {
+            socket.send(message);
+        } else {
+            alert("WebSocket连接没有建立成功!");
+        }
+    }
+
+</script>

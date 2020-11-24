@@ -1,0 +1,10 @@
+syntax = "proto3";  // 指定使用 proto3 语法
+
+option java_package = "";
+option java_outer_classname = "PbMessage"; // 指定类名
+
+message TimeServerMessage {
+  int32 id = 1;
+  string username = 2;
+  string data = 3;
+}
