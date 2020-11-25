@@ -1,6 +1,6 @@
 package cn.com.onlinetool;
 
-import cn.com.onlinetool.linearTable.list.MyLinkedList;
+import cn.com.onlinetool.chainTable.list.MyLinkedList;
 import org.junit.Test;
 
 /**

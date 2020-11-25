@@ -12,16 +12,16 @@
     <artifactId>spring-cloud</artifactId>
     <packaging>pom</packaging>
 
-    <name>springCloudDalston</name>
+    <name>spring-cloud</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
     <modules>
-        <module>eureka-server</module>
         <module>eureka-client</module>
+        <module>eureka-server</module>
         <module>consul-client</module>
+        <module>consul-consumer</module>
         <module>eureka-consumer</module>
         <module>eureka-consumer-ribbon</module>
-        <module>consul-consumer</module>
         <module>eureka-consumer-feign</module>
         <module>config-server</module>
         <module>config-client</module>
@@ -39,12 +39,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.20</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -58,5 +52,13 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
