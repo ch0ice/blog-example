@@ -82,6 +82,11 @@
             <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
             <version>${aliyun.dysmsapi.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 
