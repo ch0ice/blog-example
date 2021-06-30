@@ -12,7 +12,7 @@ public class LotteryGenerateUtil {
      * 快乐8
      * 同一天相同参数重复执行结果不变
      *
-     * @param size  生成几个号码
+     * @param size  一注几个号码
      * @param count 生成几注号码
      */
     public static void happy8(int size, int count) {
