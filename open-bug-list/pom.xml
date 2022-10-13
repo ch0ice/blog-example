@@ -16,7 +16,7 @@
     <url>http://www.example.com</url>
 
     <properties>
-        <spring-boot-start>1.5.12.RELEASE</spring-boot-start>
+        <spring-boot-start>2.5.12</spring-boot-start>
     </properties>
 
     <dependencies>
